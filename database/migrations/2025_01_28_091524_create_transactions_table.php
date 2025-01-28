@@ -11,20 +11,18 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->enum('transaction_type', ['deposit', 'withdrawal', 'transfer']);
-            $table->unsignedBigInteger('source_wallet_id')->nullable();
-            $table->unsignedBigInteger('destination_wallet_id')->nullable();
-            $table->foreignId('bank_account_id')->nullable()->constrained();
+            $table->id();
+            $table->enum('transaction_type', ['deposit', 'withdrawal', 'transfer']); 
+            $table->foreignId('source_wallet_id')->nullable()->constrained('wallets')->onDelete('cascade');
+            $table->foreignId('destination_wallet_id')->nullable()->constrained('wallets')->onDelete('cascade');
+            $table->foreignId('bank_account_id')->nullable()->constrained('bank_accounts')->onDelete('cascade'); 
             $table->decimal('amount', 15, 2);
-            $table->foreignId('user_id')->constrained();
-            $table->enum('status', ['pending', 'completed', 'failed']);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
+            $table->enum('status', ['pending', 'completed', 'failed']); 
             $table->string('reference_code')->unique();
-            $table->timestamps();
-
-            $table->foreign('source_wallet_id')->references('id')->on('wallets')->onDelete('cascade');
-            $table->foreign('destination_wallet_id')->references('id')->on('wallets')->onDelete('cascade');
+            $table->timestamps(); 
         });
+        
     }
 
     /**

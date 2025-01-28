@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('primary_bank_accounts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
             $table->foreignId('bank_account_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

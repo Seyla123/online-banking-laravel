@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('checkouts', function (Blueprint $table) {
-            $table->uuid('id')->primary();  
+            $table->id();
             $table->foreignId('transaction_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->string('otp_code')->nullable();
+            $table->integer('otp_code')->nullable();
             $table->enum('status', ['pending', 'completed', 'failed'])->default('pending');
             $table->dateTime('expired_at')->nullable();
             $table->timestamps();
