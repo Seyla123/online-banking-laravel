@@ -19,8 +19,8 @@
         <h2 class="font-semibold text-gray-800 leading-tight">
             សូមបញ្ជូលលេខគណនី ៖
         </h2>
-        <div class="space-y-2">
-            <x-input-account-number :isError="false"/>
+        <div class="space-y-2" x-data="{ account: '' }">
+            <x-input-account-number :isError="false" />
             {{-- <x-input-error :messages="'សូមបញ្ជូលលេខគណនីជាមុនសិន ! !'" class="mt-2" /> --}}
         </div>
     </section>
@@ -28,5 +28,10 @@
         <div class="fixed bottom-0 left-0 right-0 p-4 max-w-2xl mx-auto">
             <x-primary-button class="w-full flex justify-center py-4">រក្សារទុក</x-primary-button>
         </div>
-    </x-slot >
+    </x-slot>
+    <!-- Success Modal -->
+    <x-modal-success namxe="success" :message="'អំណោយសូមអរគុណ!'" :isOpen="$showSuccess" />
+
+    <!-- Error Modal -->
+    <x-modal-error :message="'មានបញ្ហាក្នុងការបញ្ជាទិញ!'" x-bind:show='showError' :isOpen="$showError" name="error" />
 </div>
