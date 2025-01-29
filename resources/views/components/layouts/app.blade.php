@@ -26,7 +26,7 @@
             <header class="bg-white flex justify-center items-center max-w-3xl mx-auto p-4">
                 <div class=" flex px-4 sm:px-6 lg:px-8 justify-between w-full">
                     {{-- back to previous --}}
-                    <x-back/>
+                    <x-back />
                     {{-- header title --}}
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                         {{ $header }}
@@ -43,6 +43,10 @@
         <main class="px-4">
             {{ $slot }}
         </main>
+        @isset($buttom)
+            {{ $buttom }}
+        @endisset
+       
     </div>
 </body>
 

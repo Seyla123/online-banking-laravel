@@ -27,7 +27,7 @@
             }
         }" class="space-y-2">
             <x-input-amount x-model.number="amount" :isError="false" />
-            <x-input-error :messages="'សូមបញ្ជូលចំនួនទឹកប្រាក់ជាមុនសិន !'" class="mt-2" />
+            {{-- <x-input-error :messages="'សូមបញ្ជូលចំនួនទឹកប្រាក់ជាមុនសិន !'" class="mt-2" /> --}}
             {{-- key amount input --}}
             <div class="grid grid-cols-4 gap-1" x-data="{ keysInput: [5, 10, 20, 50, 100, 200, 300, 500] }">
                 <template x-for="key in keysInput">
@@ -43,12 +43,12 @@
             <h2 class="font-semibold text-gray-800 leading-tight">
                 ជ្រើសរើសគណនីធនាគារដកប្រាក់ ៖​
             </h2>
-            <div class="flex gap-1 items-center">
+            <a wire:navigate href="{{ route('add-bank-account') }}" class="flex gap-1 items-center transition-transform duration-300 transform hover:scale-105">
                 <h2 class="font-semibold text-gray-800 leading-tight">
-                    បន្ថែមគណនី ៖​
+                    បន្ថែមគណនី
                 </h2>
                 <img class="min-w-5" src="{{ asset('asset/add.svg') }}" alt="edit">
-            </div>
+            </a>
         </div>
         <div class="space-y-1 lg:space-y-2">
             <x-bank-account-card :isSelected="true" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'aba'"/>
@@ -57,9 +57,9 @@
             <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'kess'"/>
         </div>
     </section>
+    
     <div class="flex w-full justify-center pb-4 sticky bottom-0">
         <x-primary-button class="w-full flex justify-center py-4">ដកប្រាក់</x-primary-button>
-       
     </div>
 
 </div>
