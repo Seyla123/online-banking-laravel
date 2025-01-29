@@ -1,4 +1,4 @@
-<div class="max-w-2xl mx-auto ">
+<div class="max-w-2xl mx-auto space-y-4">
     {{-- header title --}}
     <x-slot name="header">
         ដកប្រាក់
@@ -8,8 +8,9 @@
         <h2 class="font-semibold text-gray-800 leading-tight">
             កាបូបរបស់អ្នក ៖​
         </h2>
-     <x-wallet-card :$walletNumber :$balance/>
+        <x-wallet-card :$walletNumber :$balance />
     </section>
+    <x-alert-verify-phone :$phone />
     <div class="py-12">
         <div class="">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
