@@ -7,8 +7,16 @@
 <div
     class="flex justify-between gap-4 items-center  px-4 py-3 lg:py-4  border-[1px] rounded-xl {{ $isSelected ? 'bg-[#2196F3]/15 border-[#2196F3]/15' : '' }} ">
     {{-- logo --}}
-    <div class="min-w-8">
-        <img class="object-contain w-full h-full" src="{{ asset('asset/aba.png') }}" alt="bank">
+    <div class="max-w-8  rounded-lg">
+        @if ($bank == 'aba')
+            <img class="object-contain w-full h-full rounded-lg" src="{{ asset('asset/aba.png') }}" alt="aba bank">
+        @elseif ($bank == 'wing')
+            <img class="object-contain w-full h-full rounded-lg" src="{{ asset('asset/wing.png') }}" alt="wing bank">
+        @elseif ($bank == 'acleda')
+            <img class="object-contain w-full h-full rounded-lg" src="{{ asset('asset/acleda.jpg') }}" alt="acleda bank">
+        @elseif ($bank == 'kess')
+            <img class="object-contain w-full h-full rounded-lg" src="{{ asset('asset/kess.jpg') }}" alt="kess">
+        @endif
     </div>
     {{-- info --}}
     <div class="flex flex-col justify-start w-full">
@@ -17,6 +25,6 @@
     </div>
     {{-- delete button --}}
     <button>
-        <img class="min-w-6"  src="{{ asset('asset/trash.svg') }}" alt="delete">
+        <img class="min-w-6" src="{{ asset('asset/trash.svg') }}" alt="delete">
     </button>
 </div>

@@ -52,9 +52,9 @@
         </div>
         <div class="space-y-1 lg:space-y-2">
             <x-bank-account-card :isSelected="true" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'aba'"/>
-            <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'aba'"/>
-            <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'aba'"/>
-            <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'aba'"/>
+            <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'acleda'"/>
+            <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'wing'"/>
+            <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'kess'"/>
         </div>
     </section>
     <div class="flex w-full justify-center pb-4 sticky bottom-0">
