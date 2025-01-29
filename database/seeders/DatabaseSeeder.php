@@ -48,7 +48,12 @@ class DatabaseSeeder extends Seeder
                 ->count(4)
             )
             ->has(
-                PrimaryBankAccount::factory(1)
+                PrimaryBankAccount::factory(1)->state(function (array $attributes, User $user) {
+                    return [
+                        'user_id' => $user->id,
+                        'bank_account_id' => BankAccount::where('user_id', $user->id)->get()->random()->id,
+                    ];
+                })
             )
             ->has(
                 Wallet::factory()->count(2)
