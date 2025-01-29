@@ -1,7 +1,7 @@
-@props(['phone'])
+@props(['phone','verified'])
 <div
     class="flex justify-between items-center min-h-24 gap-2 bg-[#2196F3]/10 px-4 py-6 border-[#2196F3]/15 
-    border-[1px] rounded-lg">
+    border-[1px] rounded-lg {{ $verified==!null ? 'hidden' : '' }}">
     <img class="min-w-8" src="{{ asset('asset/warning.svg') }}" alt="balance">
     <div>
         <strong>ចំណាំ</strong> ៖​ លេខកូដផ្ទៀងផ្ទាត់ <strong>OTP</strong> នឹងផ្ញើទៅកាន់

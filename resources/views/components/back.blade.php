@@ -1,4 +1,4 @@
-<a wire:navigate href="{{ url()->previous() }}" type="button" wire:click="$emit('back')"
+<button 
     class="text-sm flex gap-1 items-center hover:text-black hover:font-semibold transition-transform duration-300 transform hover:scale-105">
 
     <svg class="text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -8,4 +8,4 @@
         <path d="M2 12H22" />
     </svg>
     ត្រឡប់ក្រោយ
-</a>
+</button>

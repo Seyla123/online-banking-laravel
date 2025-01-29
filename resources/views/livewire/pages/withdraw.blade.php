@@ -8,10 +8,10 @@
         <h2 class="font-semibold text-gray-800 leading-tight">
             កាបូបរបស់អ្នក ៖​
         </h2>
-        <x-wallet-card :$walletNumber :$balance />
+        <x-wallet-card :walletNumber="$wallet->wallet_number" :balance="$wallet->balance" />
     </section>
     {{-- verify phone --}}
-    <x-alert-verify-phone :$phone />
+    <x-alert-verify-phone :phone="$user->phone" :verified="$user->otp_verified_at"/>
     {{-- input withdraw amount --}}
     <section class="space-y-2">
         <h2 class="font-semibold text-gray-800 leading-tight">
@@ -43,21 +43,22 @@
             <h2 class="font-semibold text-gray-800 leading-tight">
                 ជ្រើសរើសគណនីធនាគារដកប្រាក់ ៖​
             </h2>
-            <a wire:navigate href="{{ route('add-bank-account') }}" class="flex gap-1 items-center transition-transform duration-300 transform hover:scale-105">
+            <a wire:navigate href="{{ route('add-bank-account') }}"
+                class="flex gap-1 items-center transition-transform duration-300 transform hover:scale-105">
                 <h2 class="font-semibold text-gray-800 leading-tight">
                     បន្ថែមគណនី
                 </h2>
                 <img class="min-w-5" src="{{ asset('asset/add.svg') }}" alt="edit">
             </a>
         </div>
-        <div class="space-y-1 lg:space-y-2">
-            <x-bank-account-card :isSelected="true" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'aba'"/>
-            <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'acleda'"/>
-            <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'wing'"/>
-            <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'kess'"/>
+        <div class="space-y-1 lg:space-y-2" x-data="{selectedBankAccount:@js($primaryBankAccount->bank_account_id)}">
+            @foreach ($bankAccounts as $bankAccount)
+                <x-bank-account-card :isSelected="false" :accountName="$bankAccount->account_name" :accountNumber="$bankAccount->account_number" :bank="$bankAccount->bank->bank_name"
+                :bankAccountId="$bankAccount->id" />
+            @endforeach
         </div>
     </section>
-    
+
     <div class="flex w-full justify-center pb-4 sticky bottom-0">
         <x-primary-button class="w-full flex justify-center py-4">ដកប្រាក់</x-primary-button>
     </div>
