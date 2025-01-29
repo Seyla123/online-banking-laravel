@@ -17,6 +17,6 @@
     </div>
     {{-- delete button --}}
     <button>
-        <img class="min-w-6" src="{{ asset('asset/trash.svg') }}" alt="delete">
+        <img class="min-w-6"  src="{{ asset('asset/trash.svg') }}" alt="delete">
     </button>
 </div>

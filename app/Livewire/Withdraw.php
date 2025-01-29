@@ -2,11 +2,10 @@
 
 namespace App\Livewire;
 
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-class Wallet extends Component
+class Withdraw extends Component
 {
     #[Title('ដកប្រាក់')]
     public $balance = 26490;
@@ -14,6 +13,6 @@ class Wallet extends Component
     public $phone = '962059095';
     public function render()
     {
-        return view('livewire.pages.wallet');
+        return view('livewire.pages.withdraw');
     }
 }

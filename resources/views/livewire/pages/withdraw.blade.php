@@ -56,7 +56,10 @@
             <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'aba'"/>
             <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'aba'"/>
         </div>
-        
     </section>
+    <div class="flex w-full justify-center pb-4 sticky bottom-0">
+        <x-primary-button class="w-full flex justify-center py-4">ដកប្រាក់</x-primary-button>
+       
+    </div>
 
 </div>

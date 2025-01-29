@@ -1,11 +1,14 @@
 <?php
 
-use App\Livewire\Wallet;
+use App\Livewire\Withdraw;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
-Route::get('/wallet', Wallet::class)->middleware(['auth', 'verified'])->name('wallet');
+Route::get('/withdraw', Withdraw::class)->middleware(['auth', 'verified'])->name('withdraw');
+Route::get('/wallet', function () {
+    return 'wallet';
+})->name('wallet');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])

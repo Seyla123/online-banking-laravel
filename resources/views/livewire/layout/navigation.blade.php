@@ -30,6 +30,9 @@ new class extends Component {
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('wallet')" :active="request()->routeIs('wallet')" wire:navigate>
+                        {{ __('កាបូប') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('withdraw')" :active="request()->routeIs('withdraw')" wire:navigate>
                         {{ __('ដកប្រាក់') }}
                     </x-nav-link>
                 </div>
