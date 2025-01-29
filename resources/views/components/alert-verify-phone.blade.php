@@ -10,8 +10,8 @@
             {{ preg_replace('/(\d{2})(\d{3})(\d{4})/', '$1 $2 $3', $phone) }}</strong> ។
     </div>
     {{-- edit phone button --}}
-    <button class="text-[#128DEF] font-semibold flex items-center gap-1">
+    <a wire:navigate href="{{ route('add-bank-account') }}" class="text-[#128DEF] font-semibold flex items-center gap-1">
         <p class="whitespace-nowrap">កែប្រែ</p>
         <img class="min-w-5" src="{{ asset('asset/edit.svg') }}" alt="edit">
-    </button>
+    </a>
 </div>
