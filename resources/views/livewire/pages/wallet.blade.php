@@ -10,14 +10,53 @@
         </h2>
         <x-wallet-card :$walletNumber :$balance />
     </section>
+    {{-- verify phone --}}
     <x-alert-verify-phone :$phone />
-    <div class="py-12">
-        <div class="">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
+    {{-- input withdraw amount --}}
+    <section class="space-y-2">
+        <h2 class="font-semibold text-gray-800 leading-tight">
+            សូមកំណត់ចំនួនទឹកប្រាក់ ៖​
+        </h2>
+        <div x-data="{
+            amount: '',
+            addAmount($input) {
+                if (this.amount == '') {
+                    this.amount = parseInt(0);
+                }
+                this.amount = parseInt(this.amount) + parseInt($input);
+            }
+        }" class="space-y-2">
+            <x-input-amount x-model.number="amount" :isError="false" />
+            <x-input-error :messages="'សូមបញ្ជូលចំនួនទឹកប្រាក់ជាមុនសិន !'" class="mt-2" />
+            {{-- key amount input --}}
+            <div class="grid grid-cols-4 gap-1" x-data="{ keysInput: [5, 10, 20, 50, 100, 200, 300, 500] }">
+                <template x-for="key in keysInput">
+                    <button @click="addAmount(key)" x-text="'$' + key"
+                        class="w-full bg-gray-200 text-sm rounded-md py-3"></button>
+                </template>
             </div>
         </div>
-    </div>
+    </section>
+    {{-- bank account --}}
+    <section class="space-y-2">
+        <div class="flex justify-between">
+            <h2 class="font-semibold text-gray-800 leading-tight">
+                ជ្រើសរើសគណនីធនាគារដកប្រាក់ ៖​
+            </h2>
+            <div class="flex gap-1 items-center">
+                <h2 class="font-semibold text-gray-800 leading-tight">
+                    បន្ថែមគណនី ៖​
+                </h2>
+                <img class="min-w-5" src="{{ asset('asset/add.svg') }}" alt="edit">
+            </div>
+        </div>
+        <div class="space-y-1 lg:space-y-2">
+            <x-bank-account-card :isSelected="true" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'aba'"/>
+            <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'aba'"/>
+            <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'aba'"/>
+            <x-bank-account-card :isSelected="false" :accountName="'seav seyla'" :accountNumber="'0234213203'" :bank="'aba'"/>
+        </div>
+        
+    </section>
+
 </div>

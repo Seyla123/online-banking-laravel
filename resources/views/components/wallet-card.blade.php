@@ -22,7 +22,7 @@
             <img class="w-6" src="{{ asset('asset/icon-park-solid_wallet.svg') }}" alt="balance">
             ចំនួនទឹកប្រាក់ ៖
         ​</div>
-        <h2 class="text-3xl font-bold">
+        <h2 class="text-2xl font-bold">
             $ {{ number_format($balance, 0, ',', ',') }}
         </h2>
     </div>
