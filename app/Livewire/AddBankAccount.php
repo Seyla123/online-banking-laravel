@@ -3,7 +3,9 @@
 namespace App\Livewire;
 
 use App\Models\Bank;
-use Auth;
+use App\Services\BankAccountService;
+use App\Validations\AddBankAccountValidateRules;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -12,27 +14,34 @@ class AddBankAccount extends Component
     #[Title('បញ្ជូលគណនី')]
     public $selectedBank;
     public $bankAccountNumber;
+    private BankAccountService $bankAccountService;
+    public function boot(BankAccountService $bankAccountService)
+    {
+        $this->bankAccountService = $bankAccountService;
+    }
     public function addBankAccount(): void
     {
-        $validated = $this->validate([
-            'selectedBank' => 'required',
-            'bankAccountNumber' => 'required'
-        ]);
+        // validate data
+        $validated = $this->validate(AddBankAccountValidateRules::rules());
 
-        try {
-            Auth::user()->bankAccounts()->create([
-                'bank_id' => $validated['selectedBank'],
-                'account_number' => $validated['bankAccountNumber'],
-                'account_name' => Auth::user()->name
+        //pass data to BankAccountService
+       $bankAccountCreated = $this->bankAccountService->createBankAccount($validated);
+       
+       // if created successfully, redirect to withdraw page
+       if($bankAccountCreated){
+           $this->redirect('/withdraw', navigate: true);
+           return;
+       }
+       // if failed, redirect back to add bank account page
+        $this->redirect('/add-bank-account', navigate: true);
 
-            ]);
-            session()->flash('success', 'បញ្ជូលគណនីរបស់អ្នកបានជោគជ័យ');
-            $this->redirect('/withdraw', navigate: true);
-
-        } catch (\Throwable $th) {
-            session()->flash('fail', 'បរាជ័យក្នុងការបញ្ជូលគណនី');
-            $this->redirect('/add-bank-account', navigate: true);
-        }
+    }
+    #[On('handleDelete')]
+    public function deleteBankAccount($id)
+    {
+        dd($id);
+        //pass data to BankAccountService
+       $this->bankAccountService->deleteBankAccount($id);
 
     }
     public function render()

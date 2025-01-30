@@ -2,7 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Models\BankAccount;
+use App\Services\BankAccountService;
+use App\Validations\WithdrawValidateRules;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
@@ -13,22 +14,28 @@ class Withdraw extends Component
     #[Title('ដកប្រាក់')]
     public $amount = 0;
     public $selectedBankAccount;
-
+    private BankAccountService $bankAccountService;
+    public function boot(BankAccountService $bankAccountService)
+    {
+        $this->bankAccountService = $bankAccountService;
+    }
     public function save()
     {
-        // // Server-side validation
-        $validated = $this->validate([
-            'amount' => 'required|numeric|lte:' . auth()->user()->wallet->first()->balance,
-            'selectedBankAccount' => 'required|exists:bank_accounts,id'
-        ], [
-            'amount.required' => 'សូមបញ្ជូលចំនួនទឹកប្រាក់ជាមុនសិន !',
-            'amount.lte' => 'ទឹកប្រាក់មិនគ្រប់គ្រាន់',
-            'selectedBankAccount.required' => 'សូមជ្រើសរើសគណនីធនាគារ'
-        ]);
+        // validate data
+        $validated = $this->validate(
+            WithdrawValidateRules::rules(), 
+            WithdrawValidateRules::messages());
         
         //session()->flash('success', 'ការដកប្រាក់បានជោគជ័យ');
         session()->flash('fail', 'បរាជ័យក្នុងការដកប្រាក់');
         $this->redirect('/withdraw', navigate: true);
+    }
+    #[On('delete-bank-account')]
+    public function deleteBankAccount($id)
+    {
+        //pass data to BankAccountService
+        $this->bankAccountService->deleteBankAccount($id);
+
     }
     public function render()
     {
