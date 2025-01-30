@@ -11,16 +11,12 @@ use Livewire\Component;
 class Withdraw extends Component
 {
     #[Title('ដកប្រាក់')]
-    public $balance = 26490;
-    public $walletNumber = '123142343214';
-    public $phone = '962059095';
     public $amount = 0;
     public $selectedBankAccount;
 
-    #[On('submit-withdraw')]
-    public function submitWithdraw()
+    public function save()
     {
-        // Server-side validation
+        // // Server-side validation
         $validated = $this->validate([
             'amount' => 'required|numeric|lte:' . auth()->user()->wallet->first()->balance,
             'selectedBankAccount' => 'required|exists:bank_accounts,id'
@@ -29,12 +25,9 @@ class Withdraw extends Component
             'amount.lte' => 'ទឹកប្រាក់មិនគ្រប់គ្រាន់',
             'selectedBankAccount.required' => 'សូមជ្រើសរើសគណនីធនាគារ'
         ]);
-        session()->flash('success', 'ការដកប្រាក់បានជោគជ័យ');
-
-    }
-    public function save()
-    {
-        session()->flash('success', 'ការដកប្រាក់បានជោគជ័យ');
+        
+        //session()->flash('success', 'ការដកប្រាក់បានជោគជ័យ');
+        session()->flash('fail', 'បរាជ័យក្នុងការដកប្រាក់');
         $this->redirect('/withdraw', navigate: true);
     }
     public function render()

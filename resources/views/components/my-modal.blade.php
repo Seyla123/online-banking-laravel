@@ -1,4 +1,5 @@
-<div class="fixed inset-0 max-w-xl mx-auto overflow-y-auto px-4 py-6 sm:px-0 z-50 flex items-center justify-center">
+<div 
+:class="show ? 'flex': 'hidden'" class="fixed inset-0 max-w-xl mx-auto overflow-y-auto px-4 py-6 sm:px-0 z-50 flex items-center justify-center">
     <div x-show="show" class="fixed inset-0 transform transition-all" x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">

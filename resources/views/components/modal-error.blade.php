@@ -1,5 +1,5 @@
-@props(['message' => '', 'isOpen' => false,'name' => ''])
-<x-my-modal :show="$isOpen" :$name>
+@props(['message' => ''])
+<x-my-modal >
     <x-slot:title>ដំណើរការមានបញ្ហា</x-slot:title>
     <x-slot:content>
         <div class="flex flex-col items-center p-6">
