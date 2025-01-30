@@ -1,8 +1,8 @@
-<form wire:submit.prevent="save" class="max-w-2xl mx-auto space-y-4" x-data="{
+<div class="max-w-2xl mx-auto space-y-4" x-data="{
     amount: '',
     selectedBankAccount: @js($primaryBankAccount->bank_account_id),
     errors: {
-        amount: @js($errors->has('amount') ? $errors->first('amount') : ''),
+        amount: '',
         bankAccount: ''
     },
     addAmount($input) {
@@ -73,6 +73,9 @@
             <!-- Alpine Error Message -->
             <p x-show="errors.amount" x-text="errors.amount" class="text-red-500 text-sm mt-2">
             </p>
+            @error('amount')
+                <x-input-error :messages="$errors->get('amount')" class="mt-2" />
+            @enderror
             {{-- key amount input --}}
             <div class="grid grid-cols-4 gap-1" x-data="{ keysInput: [5, 10, 20, 50, 100, 200, 300, 500] }">
                 <template x-for="key in keysInput">

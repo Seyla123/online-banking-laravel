@@ -11,6 +11,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class BankAccount extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'bank_id',
+        'account_number',
+        'account_name'
+    ];
     public function bank(): BelongsTo
     {
         return $this->belongsTo(Bank::class);
