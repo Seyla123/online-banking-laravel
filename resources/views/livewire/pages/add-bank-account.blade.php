@@ -25,7 +25,7 @@
     </section>
     <x-slot name="buttom">
         <div class="fixed bottom-0 left-0 right-0 p-4 max-w-2xl mx-auto">
-            <x-primary-button class="w-full flex justify-center py-4">រក្សារទុក</x-primary-button>
+            <x-primary-button  class="w-full flex justify-center py-4">រក្សារទុក</x-primary-button>
         </div>
     </x-slot>
 </div>

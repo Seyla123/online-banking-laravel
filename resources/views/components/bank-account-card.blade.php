@@ -5,9 +5,10 @@
     'bankAccountId'
 ])
 <div
-    @click="selectedBankAccount = {{ $bankAccountId }}"
+    @click="selectBankAccount({{ $bankAccountId }})"
     class="cursor-pointer flex justify-between gap-4 items-center  px-4 py-3 lg:py-4  border-[1px] rounded-xl"
     x-bind:class=" selectedBankAccount == {{ $bankAccountId }} && 'bg-[#2196F3]/15 border-[#2196F3]/15' ">
+
     {{-- logo --}}
     <div class="max-w-8  rounded-lg">
         @if ($bank == 'aba')
