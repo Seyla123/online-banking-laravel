@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\BankAccount;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -15,16 +16,17 @@ class Withdraw extends Component
 
     public function render()
     {
-        $user = Auth::user();
-        $wallet = $user->wallet->first();   
-        $bankAccounts=$user->bankAccounts; 
-        $primaryBankAccount=$user->primaryBankAccount;
+        $user = Auth::user()->load([
+            'wallet',
+            'bankAccounts.bank',
+            'primaryBankAccount'
+        ]);
         
-        return view('livewire.pages.withdraw',[
-            'wallet' => $wallet,
-            'bankAccounts' => $bankAccounts,
-            'primaryBankAccount' => $primaryBankAccount,
-            'user'=>$user
+        return view('livewire.pages.withdraw', [
+            'wallet' => $user->wallet->first(),
+            'bankAccounts' => $user->bankAccounts,
+            'primaryBankAccount' => $user->primaryBankAccount,
+            'user' => $user
         ]);
     }
 }

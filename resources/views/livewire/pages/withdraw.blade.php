@@ -11,7 +11,7 @@
         <x-wallet-card :walletNumber="$wallet->wallet_number" :balance="$wallet->balance" />
     </section>
     {{-- verify phone --}}
-    <x-alert-verify-phone :phone="$user->phone" :verified="$user->otp_verified_at"/>
+    <x-alert-verify-phone :phone="$user->phone"/>
     {{-- input withdraw amount --}}
     <section class="space-y-2">
         <h2 class="font-semibold text-gray-800 leading-tight">

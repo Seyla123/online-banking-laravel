@@ -8,11 +8,10 @@
         <h2 class="font-semibold text-gray-800 leading-tight">
             កាបូបរបស់អ្នក ៖​
         </h2>
-        <div class="grid grid-cols-2 gap-2" x-data="{ selectedBank: true }">
-            <x-bank-card :isSelected="true" :bank="'aba'" />
-            <x-bank-card :isSelected="false" :bank="'wing'" />
-            <x-bank-card :isSelected="false" :bank="'acleda'" />
-            <x-bank-card :isSelected="false" :bank="'kess'" />
+        <div class="grid grid-cols-2 gap-2" x-data="{ selectedBank:  @js($banks[0]->id)  }">
+            @foreach ($banks as $bank)
+                <x-bank-card :bank="$bank->bank_name" :bankId="$bank->id" />
+            @endforeach
         </div>
     </section>
     <section class="space-y-2">
@@ -29,9 +28,4 @@
             <x-primary-button class="w-full flex justify-center py-4">រក្សារទុក</x-primary-button>
         </div>
     </x-slot>
-    <!-- Success Modal -->
-    <x-modal-success namxe="success" :message="'អំណោយសូមអរគុណ!'" :isOpen="$showSuccess" />
-
-    <!-- Error Modal -->
-    <x-modal-error :message="'មានបញ្ហាក្នុងការបញ្ជាទិញ!'" x-bind:show='showError' :isOpen="$showError" name="error" />
 </div>

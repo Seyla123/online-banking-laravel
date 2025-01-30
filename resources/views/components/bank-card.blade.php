@@ -1,9 +1,11 @@
 @props([
     'isSelected' => false,
     'bank',
+    'bankId',
 ])
-<button
-    class="flex flex-col gap-2 items-center lg:py-12 py-8   border-[1px] px-4 rounded-xl hover:bg-[#2196F3]/15 hover:border-[#2196F3]/15 duration-300 {{ $isSelected ? 'bg-[#2196F3]/15 border-[#2196F3]/15' : 'bg-[#F6F6F6]/30' }} }}">
+<button @click="selectedBank = {{ $bankId }}"
+    class="flex flex-col gap-2 items-center lg:py-12 py-8   border-[1px] px-4 rounded-xl hover:bg-[#2196F3]/15 hover:border-[#2196F3]/15 duration-300  "
+    x-bind:class="selectedBank == {{ $bankId }} ? 'bg-[#2196F3]/15 border-[#2196F3]/15' : 'bg-[#F6F6F6]/30'">
     @if ($bank == 'aba')
         <img class="max-w-16 rounded-xl" src="{{ asset('asset/aba.png') }}" alt="bank">
         <h2 class="text-sm font-semibold">ABA Bank</h2>
