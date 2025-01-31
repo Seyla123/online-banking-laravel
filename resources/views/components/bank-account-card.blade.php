@@ -1,5 +1,5 @@
 @props(['bank', 'accountNumber', 'accountName', 'bankAccountId'])
-<div 
+<div @click="selectedBankAccount = {{ $bankAccountId }}"
     class="cursor-pointer flex justify-between gap-4 items-center  px-4 py-3 lg:py-4  border-[1px] rounded-xl min-h-[70px] xl:min-h-[100px]"
     x-bind:class="selectedBankAccount == {{ $bankAccountId }} && 'bg-[#2196F3]/15 border-[#2196F3]/15'">
 
@@ -21,10 +21,10 @@
         <p class="text-sm text-gray-500">លេខគណនី​ : {{ $accountNumber }}</p>
     </div>
     {{-- delete button --}}
-    <button x-show="selectedBankAccount !== {{ $bankAccountId }}" type="button" wire:click="$dispatch('delete-bank-account', { id: {{ $bankAccountId }} })">
+    <button x-show="selectedBankAccount !== {{ $bankAccountId }}" type="button" @click="event.stopPropagation();$dispatch('delete-bank-account', { id: {{ $bankAccountId }} })">
         <img class="min-w-6" src="{{ asset('asset/trash.svg') }}" alt="delete">
     </button>
-    <button x-show="selectedBankAccount == {{ $bankAccountId }}" class="z-10 text-sm whitespace-nowrap bg-[#2196F3]/20 hover:bg-[#2196F3]/30 font-semibold text-[#2ba0ff] p-2 rounded-full flex items-center">
+    <button x-show="selectedBankAccount == {{ $bankAccountId }}" class=" text-sm whitespace-nowrap bg-[#2196F3]/20 hover:bg-[#2196F3]/30 font-semibold text-[#2ba0ff] p-2 rounded-full flex items-center">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
     </button>
 </div>

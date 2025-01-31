@@ -1,7 +1,6 @@
 <?php
 namespace App\Services;
 
-use App\Models\Article;
 use App\Repositories\BankAccountRepository;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -14,6 +13,11 @@ class BankAccountService extends Component
         $this->repository = $repository;
     }
 
+    /**
+     * create a new bank account
+     * @param array $data the data needed to create a new bank account.
+     * @return bool True on success, False on fail
+     */
     public function createBankAccount(array $data): bool
     {
         try {
@@ -23,21 +27,36 @@ class BankAccountService extends Component
                 'account_name' => Auth::user()->name,
                 'user_id' => Auth::user()->id
             ]);
+
             session()->flash('success', 'បញ្ជូលគណនីរបស់អ្នកបានជោគជ័យ');
             return true;
         } catch (\Throwable $th) {
-            session()->flash('fail', 'បរាជ័យក្នុងការបញ្ជូលគណនី');
+
+            if (config('app.env') == 'production') {
+                session()->flash('fail', 'បរាជ័យក្នុងការបញ្ជូលគណនី');
+            } else {
+                session()->flash('fail', $th->getMessage());
+            }
             return false;
         }
     }
-    public function deleteBankAccount($id)
+    /**
+     * Delete a bank account by id
+     * @param int|string $id The ID of the bank account to delete.
+     * @return void
+     */
+    public function deleteBankAccount(int|string $id): void
     {
         try {
-            $this->repository->delete($id);
+            $this->repository->find($id)->delete();
             session()->flash('success', 'លុបគណនីរបស់អ្នកបានជោគជ័យ');
-            return;
+
         } catch (\Throwable $th) {
-            session()->flash('fail', $th->getMessage());
+            if (config('app.env') == 'production') {
+                session()->flash('fail', 'បរាជ័យក្នុងការលុបគណនី');
+            } else {
+                session()->flash('fail', $th->getMessage());
+            }
         }
     }
 

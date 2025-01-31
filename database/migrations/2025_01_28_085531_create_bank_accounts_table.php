@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('bank_accounts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('bank_id')->constrained();
+            $table->foreignId('bank_id')->constrained()->onDelete('cascade');
             $table->integer('account_number')->unique();
             $table->string('account_name');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

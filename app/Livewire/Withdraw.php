@@ -22,7 +22,7 @@ class Withdraw extends Component
     public function save()
     {
         // validate data
-        $validated = $this->validate(
+        $this->validate(
             WithdrawValidateRules::rules(), 
             WithdrawValidateRules::messages());
         
@@ -35,7 +35,7 @@ class Withdraw extends Component
     {
         //pass data to BankAccountService
         $this->bankAccountService->deleteBankAccount($id);
-
+        $this->redirect('/withdraw', navigate: true);
     }
     public function render()
     {

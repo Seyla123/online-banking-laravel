@@ -39,7 +39,6 @@ class AddBankAccount extends Component
     #[On('handleDelete')]
     public function deleteBankAccount($id)
     {
-        dd($id);
         //pass data to BankAccountService
        $this->bankAccountService->deleteBankAccount($id);
 
