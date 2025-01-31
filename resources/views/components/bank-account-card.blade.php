@@ -2,8 +2,7 @@
 <div @click="selectedBankAccount = {{ $bankAccountId }}" x-data="{ show: false }"
     class="cursor-pointer flex justify-between gap-4 items-center  px-4 py-3 lg:py-4  border-[1px] rounded-xl min-h-[70px] xl:min-h-[100px]"
     x-bind:class="selectedBankAccount == {{ $bankAccountId }} && 'bg-[#2196F3]/15 border-[#2196F3]/15'">
-    <p>{{ $bankAccountId }}</p>
-    {{-- logo --}}
+    {{-- check logo  --}}
     <div class="max-w-8  rounded-lg">
         @if ($bank == 'aba')
             <img class="object-contain w-full h-full rounded-lg" src="{{ asset('asset/aba.png') }}" alt="aba bank">
