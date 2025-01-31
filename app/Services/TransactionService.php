@@ -32,7 +32,6 @@ class TransactionService
 
             // Process the transaction and return the result
             return $transaction->process($data);
-
         } catch (\Exception $e) {
             // Log the error for debugging purposes
             \Log::error('Transaction creation failed: ' . $e->getMessage());
@@ -51,13 +50,13 @@ class TransactionService
             case 'deposit':
                 return new DepositTransaction($this->repository);
             case 'withdrawal':
-               return new WithdrawTransaction($this->repository);
+                return new WithdrawTransaction($this->repository);
             case 'transfer':
-               return new TransferTransaction($this->repository);
+                return new TransferTransaction($this->repository);
             default:
                 // Throw an exception if the transaction type is invalid
                 throw new \InvalidArgumentException('Invalid transaction type');
-        } 
+        }
     }
     /**
      * gerate unique reference code
