@@ -17,7 +17,6 @@ class WithdrawTransaction implements TransactionInterface
     {
         return $this->repository->create([
             'amount' => $data['amount'],
-            'user_id' => $data['user_id'],
             'transaction_type' => 'withdrawal',
             'bank_account_id' => $data['selectedBankAccount'],
             'source_wallet_id' => $data['walletId'],

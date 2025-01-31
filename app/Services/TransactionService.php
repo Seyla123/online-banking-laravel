@@ -29,23 +29,29 @@ class TransactionService
         $this->withdrawTransaction = $withdrawTransaction;
         $this->transferTransaction = $transferTransaction;
     }
+    /**
+     * create transaction ('deposit', 'withdrawal', 'transfer')
+     * @param array $data
+     * @param string $transactionType type of transaction ('deposit', 'withdrawal', 'transfer')
+     * @return void
+     */
     public function createTransaction(array $data, string $transactionType)
     {
         try {
-            // Add user id and reference code to the transaction data
+            //prepare data 
             $data = array_merge($data, [
-                'user_id' => Auth::id(),
                 'reference_code' => $this->generateReferenceCode(),
                 'transaction_type' => $transactionType,
             ]);
-
-            // Determine which transaction type to create
-            $transaction = $this->getTransactionInstance($transactionType);
 
             // Check if the wallet has sufficient balance for (withdrawal, transfer)
             if ($transactionType == 'withdrawal' || $transactionType == 'transfer') {
                 $this->walletService->hasSufficientBalance($data['amount']);
             }
+
+            // Determine which transaction type to create
+            $transaction = $this->getTransactionInstance($transactionType);
+
 
             // Process the transaction and get the created transaction
             $createdTransaction = $transaction->process($data);

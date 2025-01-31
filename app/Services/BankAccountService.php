@@ -24,7 +24,6 @@ class BankAccountService
                 'bank_id' => $data['selectedBank'],
                 'account_number' => $data['bankAccountNumber'],
                 'account_name' => Auth::user()->name,
-                'user_id' => Auth::user()->id
             ]);
 
             session()->flash('success', 'បញ្ជូលគណនីរបស់អ្នកបានជោគជ័យ');
