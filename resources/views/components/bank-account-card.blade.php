@@ -1,5 +1,5 @@
 @props(['bank', 'accountNumber', 'accountName', 'bankAccountId'])
-<div @click="selectedBankAccount = {{ $bankAccountId }}"
+<div @click="selectedBankAccount = {{ $bankAccountId }}" x-data="{ show: false }"
     class="cursor-pointer flex justify-between gap-4 items-center  px-4 py-3 lg:py-4  border-[1px] rounded-xl min-h-[70px] xl:min-h-[100px]"
     x-bind:class="selectedBankAccount == {{ $bankAccountId }} && 'bg-[#2196F3]/15 border-[#2196F3]/15'">
     <p>{{ $bankAccountId }}</p>
@@ -10,7 +10,8 @@
         @elseif ($bank == 'wing')
             <img class="object-contain w-full h-full rounded-lg" src="{{ asset('asset/wing.png') }}" alt="wing bank">
         @elseif ($bank == 'acleda')
-            <img class="object-contain w-full h-full rounded-lg" src="{{ asset('asset/acleda.jpg') }}" alt="acleda bank">
+            <img class="object-contain w-full h-full rounded-lg" src="{{ asset('asset/acleda.jpg') }}"
+                alt="acleda bank">
         @elseif ($bank == 'kess')
             <img class="object-contain w-full h-full rounded-lg" src="{{ asset('asset/kess.jpg') }}" alt="kess">
         @endif
@@ -22,7 +23,7 @@
     </div>
     {{-- delete button --}}
     <button x-show="selectedBankAccount !== {{ $bankAccountId }}" type="button"
-        @click="event.stopPropagation();$dispatch('delete-bank-account', { id: {{ $bankAccountId }} })">
+        @click="event.stopPropagation();show = true">
         <img class="min-w-6" src="{{ asset('asset/trash.svg') }}" alt="delete">
     </button>
     <button x-show="selectedBankAccount == {{ $bankAccountId }}"
@@ -33,4 +34,9 @@
             <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
     </button>
+
+    {{-- modal delete confirmation --}}
+    <x-modal-confirm-delete :$bankAccountId :message="'តើអ្នកប្រាកដជាចង់លុបគណនី ' . strtoupper($bank) . ' : ' . strtoupper($accountName) . ' នេះឬទេ?'">
+    </x-modal-confirm-delete>
+
 </div>
