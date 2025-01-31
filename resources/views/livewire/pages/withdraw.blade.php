@@ -1,6 +1,6 @@
 <div class="max-w-2xl mx-auto space-y-4" x-data="{
     amount: '',
-    selectedBankAccount: @js($primaryBankAccount->bank_account_id),
+    selectedBankAccount: @js($primaryBankAccount), 
     errors: {
         amount: '',
         bankAccount: ''

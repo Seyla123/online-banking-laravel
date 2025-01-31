@@ -3,9 +3,8 @@ namespace App\Services;
 
 use App\Repositories\BankAccountRepository;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
 
-class BankAccountService extends Component
+class BankAccountService
 {
     private BankAccountRepository $repository;
     public function __construct(BankAccountRepository $repository)

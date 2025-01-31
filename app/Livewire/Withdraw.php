@@ -44,11 +44,12 @@ class Withdraw extends Component
             'bankAccounts.bank',
             'primaryBankAccount'
         ]);
+       $primaryBankAccount= $primaryBankAccount->bank_account_id ?? $user->bankAccounts[0]->id;
 
         return view('livewire.pages.withdraw', [
             'wallet' => $user->wallet->first(),
             'bankAccounts' => $user->bankAccounts,
-            'primaryBankAccount' => $user->primaryBankAccount,
+            'primaryBankAccount' => $primaryBankAccount,
             'user' => $user
         ]);
     }
