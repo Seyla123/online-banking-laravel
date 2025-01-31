@@ -1,4 +1,4 @@
-<div class="max-w-2xl mx-auto space-y-4" x-data="{
+<div class="max-w-2xl mx-auto space-y-6" x-data="{
     amount: '',
     selectedBankAccount: @js($primaryBankAccount), 
     errors: {
@@ -63,7 +63,7 @@
     {{-- verify phone --}}
     <x-alert-verify-phone :phone="auth()->user()->phone" />
 
-    {{-- input withdraw amount --}}
+    {{-- input withdraw amount section--}}
     <section class="space-y-2">
         <h2 class="font-semibold text-gray-800 leading-tight">
             សូមកំណត់ចំនួនទឹកប្រាក់ ៖​
@@ -87,12 +87,13 @@
         </div>
     </section>
 
-    {{-- bank account --}}
+    {{-- bank account section--}}
     <section class="space-y-2">
         <div class="flex justify-between">
             <h2 class="font-semibold text-gray-800 leading-tight">
                 ជ្រើសរើសគណនីធនាគារដកប្រាក់ ៖​
             </h2>
+            {{-- click to add bank account--}}
             <a wire:navigate href="{{ route('add-bank-account') }}"
                 class="flex gap-1 items-center transition-transform duration-300 transform hover:scale-105">
                 <h2 class="font-semibold text-gray-800 leading-tight">
@@ -103,8 +104,12 @@
         </div>
         <div class="space-y-1 lg:space-y-2">
             @foreach ($bankAccounts as $bankAccount)
-                <x-bank-account-card :accountName="$bankAccount->account_name" :accountNumber="$bankAccount->account_number" :bank="$bankAccount->bank->bank_name" :bankAccountId="$bankAccount->id"
-                    @click="selectBankAccount({{ $bankAccount->id }})" wire:key="{{ $bankAccount->id }}" />
+                <x-bank-account-card 
+                    :accountName="$bankAccount->account_name" :accountNumber="$bankAccount->account_number" 
+                    :bank="$bankAccount->bank->bank_name" :bankAccountId="$bankAccount->id"
+                    @click="selectBankAccount({{ $bankAccount->id }})" 
+                    wire:key="{{ $bankAccount->id }}"
+                />
             @endforeach
             <!-- Alpine Error Message -->
             <p x-show="errors.bankAccount" x-text="errors.bankAccount" class="text-red-500 text-sm mt-2">
@@ -112,13 +117,15 @@
         </div>
     </section>
 
+    {{-- submit button --}}
     <div class="flex w-full justify-center pb-4 sticky bottom-0">
         <x-primary-button type="button" @click="submitForm" class="w-full flex justify-center py-4">
             <span wire:loading.remove>ដកប្រាក់</span>
             <span wire:loading>កំពុងដំណើរការ...</span>
         </x-primary-button>
     </div>
-    {{-- Success & Error Messages from Livewire Flash Session --}}
+
+    {{-- Success & Error Messages --}}
     @if (session()->has('success'))
         <div x-data="{ show: true }">
             <x-modal-success :message="session('success')" />

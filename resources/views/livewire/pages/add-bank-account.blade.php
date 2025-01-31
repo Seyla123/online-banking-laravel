@@ -1,4 +1,4 @@
-<div class="max-w-2xl mx-auto space-y-4" x-data="{
+<div class="max-w-2xl mx-auto space-y-6" x-data="{
     bankAccountNumber: '',
     selectedBank: @js($banks[0]->id),
     errors: {
