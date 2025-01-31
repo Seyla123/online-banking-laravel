@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Services\BankAccountService;
+use App\Services\TransactionService;
 use App\Validations\WithdrawValidateRules;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
@@ -14,20 +15,29 @@ class Withdraw extends Component
     #[Title('ដកប្រាក់')]
     public $amount = 0;
     public $selectedBankAccount;
+    public $walletId;
     private BankAccountService $bankAccountService;
-    public function boot(BankAccountService $bankAccountService)
-    {
+    private TransactionService $transactionService;
+    public function boot(
+        BankAccountService $bankAccountService,
+        TransactionService $transactionService
+    ) {
         $this->bankAccountService = $bankAccountService;
+        $this->transactionService = $transactionService;
     }
     public function save()
     {
         // validate data
-        $this->validate(
-            WithdrawValidateRules::rules(), 
-            WithdrawValidateRules::messages());
-        
-        //session()->flash('success', 'ការដកប្រាក់បានជោគជ័យ');
-        session()->flash('fail', 'បរាជ័យក្នុងការដកប្រាក់');
+        $validated = $this->validate(
+            WithdrawValidateRules::rules(),
+            WithdrawValidateRules::messages()
+        );
+        // pass data to TransactionService
+        $transaction = $this->transactionService->createTransaction( $validated, 'withdrawal');
+
+
+        // //session()->flash('success', 'ការដកប្រាក់បានជោគជ័យ');
+        // session()->flash('fail', 'បរាជ័យក្នុងការដកប្រាក់');
         $this->redirect('/withdraw', navigate: true);
     }
     #[On('delete-bank-account')]
@@ -44,10 +54,12 @@ class Withdraw extends Component
             'bankAccounts.bank',
             'primaryBankAccount'
         ]);
-       $primaryBankAccount= $primaryBankAccount->bank_account_id ?? $user->bankAccounts[0]->id;
+        $primaryBankAccount = $primaryBankAccount->bank_account_id ?? $user->bankAccounts[0]->id;
+        $wallet = $user->wallet->first();
+        $this->walletId = $wallet->id;
 
         return view('livewire.pages.withdraw', [
-            'wallet' => $user->wallet->first(),
+            'wallet' => $wallet,
             'bankAccounts' => $user->bankAccounts,
             'primaryBankAccount' => $primaryBankAccount,
             'user' => $user

@@ -9,6 +9,15 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Transaction extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'amount',
+        'transaction_type',
+        'source_wallet_id',
+        'destination_wallet_id',
+        'reference_code',
+        'bank_account_id',
+    ];
     
     public function sourceWallet()
     {

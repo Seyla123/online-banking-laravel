@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->foreignId('bank_account_id')->nullable()->constrained('bank_accounts')->onDelete('cascade'); 
             $table->decimal('amount', 15, 2);
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
-            $table->enum('status', ['pending', 'completed', 'failed']); 
+            $table->enum('status', ['pending', 'completed', 'failed'])->default('pending'); 
             $table->string('reference_code')->unique();
             $table->timestamps(); 
         });

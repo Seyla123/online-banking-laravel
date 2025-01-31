@@ -15,4 +15,5 @@ class TransactionRepository implements TransactionRepositoryInterface
     {
         return Transaction::findOrFail($id);
     }
+    
 }
