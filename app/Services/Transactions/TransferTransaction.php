@@ -19,7 +19,7 @@ class TransferTransaction implements TransactionInterface
             'user_id' => $data['user_id'],
             'transaction_type' => 'transfer',
             'destination_wallet_id' => $data['destination_wallet_id'],
-            'source_wallet_id' => $data['source_wallet_id'],
+            'source_wallet_id' => $data['walletId'],
             'reference_code' => $data['reference_code'],
         ]);
     }

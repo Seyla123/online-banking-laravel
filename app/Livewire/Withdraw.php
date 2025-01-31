@@ -33,21 +33,9 @@ class Withdraw extends Component
             WithdrawValidateRules::messages()
         );
 
-        // pass data to TransactionService to create pending transaction 
-        $transaction = $this->transactionService->createTransaction( $validated, 'withdrawal');
+        // pass data to TransactionService
+        $this->transactionService->createTransaction( $validated, 'withdrawal');
 
-        // create checkout and verify otp 
-        // if success set transaction status to completed
-        // else set transaction status to failed
-        // TODO: implement checkout
-        
-        // if (!$transaction) {
-        //     session()->flash('success', 'ការដកប្រាក់បានជោគជ័យ');
-        //     return $this->redirect('/withdraw', navigate: true);
-        // }
-
-        // //session()->flash('success', 'ការដកប្រាក់បានជោគជ័យ');
-        session()->flash('fail', 'បរាជ័យក្នុងការដកប្រាក់');
         $this->redirect('/withdraw', navigate: true);
     }
     #[On('delete-bank-account')]

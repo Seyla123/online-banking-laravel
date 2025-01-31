@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Interfaces\TransactionInterface;
-use App\Models\Transaction;
 use App\Repositories\TransactionRepository;
 use App\Services\Transactions\DepositTransaction;
 use App\Services\Transactions\TransferTransaction;
@@ -13,9 +12,22 @@ use Illuminate\Support\Str;
 class TransactionService
 {
     private TransactionRepository $repository;
-    public function __construct(TransactionRepository $repository)
-    {
+    private WalletService $walletService;
+    private DepositTransaction $depositTransaction;
+    private WithdrawTransaction $withdrawTransaction;
+    private TransferTransaction $transferTransaction;
+    public function __construct(
+        TransactionRepository $repository,
+        WalletService $walletService,
+        DepositTransaction $depositTransaction,
+        WithdrawTransaction $withdrawTransaction,
+        TransferTransaction $transferTransaction
+    ) {
         $this->repository = $repository;
+        $this->walletService = $walletService;
+        $this->depositTransaction = $depositTransaction;
+        $this->withdrawTransaction = $withdrawTransaction;
+        $this->transferTransaction = $transferTransaction;
     }
     public function createTransaction(array $data, string $transactionType)
     {
@@ -30,12 +42,27 @@ class TransactionService
             // Determine which transaction type to create
             $transaction = $this->getTransactionInstance($transactionType);
 
-            // Process the transaction and return the result
-            return $transaction->process($data);
+            // Check if the wallet has sufficient balance for (withdrawal, transfer)
+            if ($transactionType == 'withdrawal' || $transactionType == 'transfer') {
+                $this->walletService->hasSufficientBalance($data['amount']);
+            }
+
+            // Process the transaction and get the created transaction
+            $createdTransaction = $transaction->process($data);
+
+            // pass created transaction to WalletService 
+            // to be able to update (add or subtract) the balance in the wallet
+            $this->walletService->updateBanlance($createdTransaction);
+
+            session()->flash('success', 'ការដកប្រាក់បានជោគជ័យ');
         } catch (\Exception $e) {
             // Log the error for debugging purposes
             \Log::error('Transaction creation failed: ' . $e->getMessage());
-            throw new \RuntimeException('Transaction could not be created.');
+            if (config('app.env') == 'production') {
+                session()->flash('fail', 'បរាជ័យក្នុងការដកប្រាក់');
+            } else {
+                session()->flash('fail', $e->getMessage());
+            }
         }
     }
     /**
@@ -48,13 +75,12 @@ class TransactionService
     {
         switch ($transactionType) {
             case 'deposit':
-                return new DepositTransaction($this->repository);
+                return $this->depositTransaction;
             case 'withdrawal':
-                return new WithdrawTransaction($this->repository);
+                return $this->withdrawTransaction;
             case 'transfer':
-                return new TransferTransaction($this->repository);
+                return $this->transferTransaction;
             default:
-                // Throw an exception if the transaction type is invalid
                 throw new \InvalidArgumentException('Invalid transaction type');
         }
     }
