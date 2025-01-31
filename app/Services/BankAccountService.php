@@ -47,7 +47,15 @@ class BankAccountService
     public function deleteBankAccount(int|string $id): void
     {
         try {
-            $this->repository->find($id)->delete();
+            // find the bank account
+            $bankAccount = $this->repository->find($id);
+            if (!$bankAccount) {
+                throw new \Exception('រកមិនឃើញគណនីនេះក្នុងប្រព័ន្ធទេ');
+            }
+
+            // delete the bank account
+            $this->repository->delete($bankAccount);
+            
             session()->flash('success', 'លុបគណនីរបស់អ្នកបានជោគជ័យ');
 
         } catch (\Throwable $th) {

@@ -36,7 +36,6 @@ class WalletService
             default:
                 throw new \InvalidArgumentException('Invalid transaction type');
         }
-
     }
     /**
      * withdraw funds and update (subtract) wallet balance

@@ -61,7 +61,7 @@
         <x-wallet-card :walletNumber="$wallet->wallet_number" :balance="$wallet->balance" />
     </section>
     {{-- verify phone --}}
-    <x-alert-verify-phone :phone="$user->phone" />
+    <x-alert-verify-phone :phone="auth()->user()->phone" />
 
     {{-- input withdraw amount --}}
     <section class="space-y-2">

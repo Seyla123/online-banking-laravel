@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Bank;
+use App\Repositories\WalletRepository;
 use App\Services\BankAccountService;
 use App\Validations\AddBankAccountValidateRules;
 use Livewire\Attributes\On;
@@ -34,13 +35,6 @@ class AddBankAccount extends Component
        }
        // if failed, redirect back to add bank account page
         $this->redirect('/add-bank-account', navigate: true);
-
-    }
-    #[On('handleDelete')]
-    public function deleteBankAccount($id)
-    {
-        //pass data to BankAccountService
-       $this->bankAccountService->deleteBankAccount($id);
 
     }
     public function render()

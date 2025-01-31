@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Repositories\WalletRepository;
 use App\Services\BankAccountService;
 use App\Services\TransactionService;
 use App\Validations\WithdrawValidateRules;
@@ -18,12 +19,16 @@ class Withdraw extends Component
     public $walletId;
     private BankAccountService $bankAccountService;
     private TransactionService $transactionService;
+    private WalletRepository $walletRepository;
     public function boot(
         BankAccountService $bankAccountService,
-        TransactionService $transactionService
+        TransactionService $transactionService,
+        WalletRepository $walletRepository
     ) {
         $this->bankAccountService = $bankAccountService;
         $this->transactionService = $transactionService;
+        $this->walletRepository = $walletRepository;
+
     }
     public function save()
     {
@@ -43,24 +48,29 @@ class Withdraw extends Component
     {
         //pass data to BankAccountService
         $this->bankAccountService->deleteBankAccount($id);
+
         $this->redirect('/withdraw', navigate: true);
     }
     public function render()
     {
         $user = Auth::user()->load([
-            'wallet',
             'bankAccounts.bank',
             'primaryBankAccount'
         ]);
+
+        // if primary bank account is not set, set it to the first bank account
         $primaryBankAccount = $primaryBankAccount->bank_account_id ?? $user->bankAccounts[0]->id;
-        $wallet = $user->wallet->first();
+
+        // get wallet 
+        $wallet = $this->walletRepository->getWallet();
+
+        // set wallet id
         $this->walletId = $wallet->id;
 
         return view('livewire.pages.withdraw', [
             'wallet' => $wallet,
             'bankAccounts' => $user->bankAccounts,
             'primaryBankAccount' => $primaryBankAccount,
-            'user' => $user
         ]);
     }
 }

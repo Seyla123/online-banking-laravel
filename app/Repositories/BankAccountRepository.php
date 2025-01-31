@@ -17,6 +17,6 @@ class BankAccountRepository implements BankAccountRepositoryInterface
     }
     public function find(string|int $id): ?BankAccount
     {
-        return BankAccount::find($id)->first();
+        return BankAccount::find($id);
     }
 }
