@@ -17,7 +17,7 @@
             @isset($title)
                 <h2 class="font-semibold">{{ $title }}</h2>
             @endisset
-            <button @click="show = false">
+            <button @click="event.stopPropagation();show = false">
                 <img class="max-w-16 rounded-xl" src="{{ asset('asset/cancel.svg') }}" alt="bank">
             </button>
         </div>
