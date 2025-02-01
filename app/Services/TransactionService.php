@@ -30,7 +30,7 @@ class TransactionService
         $this->transferTransaction = $transferTransaction;
     }
     /**
-     * create transaction ('deposit', 'withdrawal', 'transfer')
+     * create transaction base on transaction type ('deposit', 'withdrawal', 'transfer')
      * @param array $data
      * @param string $transactionType type of transaction ('deposit', 'withdrawal', 'transfer')
      * @return void
