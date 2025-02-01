@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Repositories\TransactionRepository;
 use App\Repositories\WalletRepository;
+use App\Services\CheckoutService;
 use App\Services\Transactions\DepositTransaction;
 use App\Services\Transactions\TransferTransaction;
 use App\Services\Transactions\WithdrawTransaction;
@@ -36,7 +37,8 @@ class AppServiceProvider extends ServiceProvider
                 $app->make(WalletService::class),
                 $app->make(DepositTransaction::class),
                 $app->make(WithdrawTransaction::class),
-                $app->make(TransferTransaction::class)
+                $app->make(TransferTransaction::class),
+                $app->make(CheckoutService::class)
             );
         });
     }

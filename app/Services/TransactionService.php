@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Interfaces\TransactionInterface;
+use App\Models\Checkout;
+use App\Models\Transaction;
 use App\Repositories\TransactionRepository;
 use App\Services\Transactions\DepositTransaction;
 use App\Services\Transactions\TransferTransaction;
@@ -16,18 +18,21 @@ class TransactionService
     private DepositTransaction $depositTransaction;
     private WithdrawTransaction $withdrawTransaction;
     private TransferTransaction $transferTransaction;
+    private CheckoutService $checkoutService;
     public function __construct(
         TransactionRepository $repository,
         WalletService $walletService,
         DepositTransaction $depositTransaction,
         WithdrawTransaction $withdrawTransaction,
-        TransferTransaction $transferTransaction
+        TransferTransaction $transferTransaction,
+        CheckoutService $checkoutService
     ) {
         $this->repository = $repository;
         $this->walletService = $walletService;
         $this->depositTransaction = $depositTransaction;
         $this->withdrawTransaction = $withdrawTransaction;
         $this->transferTransaction = $transferTransaction;
+        $this->checkoutService = $checkoutService;
     }
     /**
      * create transaction base on transaction type ('deposit', 'withdrawal', 'transfer')
@@ -35,7 +40,7 @@ class TransactionService
      * @param string $transactionType type of transaction ('deposit', 'withdrawal', 'transfer')
      * @return void
      */
-    public function createTransaction(array $data, string $transactionType)
+    public function createTransaction(array $data, string $transactionType): ?Transaction
     {
         try {
             //prepare data 
@@ -54,13 +59,13 @@ class TransactionService
 
 
             // Process the transaction and get the created transaction
-            $createdTransaction = $transaction->process($data);
+            return $transaction->process($data);
 
             // pass created transaction to WalletService 
             // to be able to update (add or subtract) the balance in the wallet
-            $this->walletService->updateBanlance($createdTransaction);
+            // $this->walletService->updateBanlance($createdTransaction);
 
-            session()->flash('success', 'ការដកប្រាក់បានជោគជ័យ');
+            // session()->flash('success', 'ការដកប្រាក់បានជោគជ័យ');
         } catch (\Exception $e) {
             // Log the error for debugging purposes
             \Log::error('Transaction creation failed: ' . $e->getMessage());

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Repositories\WalletRepository;
 use App\Services\BankAccountService;
+use App\Services\CheckoutService;
 use App\Services\OtpService;
 use App\Services\TransactionService;
 use App\Validations\WithdrawValidateRules;
@@ -21,17 +22,17 @@ class Withdraw extends Component
     private BankAccountService $bankAccountService;
     private TransactionService $transactionService;
     private WalletRepository $walletRepository;
-    private OtpService $otpService;
+    private CheckoutService $checkoutService;
     public function boot(
         BankAccountService $bankAccountService,
         TransactionService $transactionService,
         WalletRepository $walletRepository,
-        OtpService $otpService
+        CheckoutService $checkoutService
     ) {
         $this->bankAccountService = $bankAccountService;
         $this->transactionService = $transactionService;
         $this->walletRepository = $walletRepository;
-        $this->otpService = $otpService;
+        $this->checkoutService = $checkoutService;
     }
     public function save()
     {
@@ -41,12 +42,14 @@ class Withdraw extends Component
             WithdrawValidateRules::messages()
         );
 
-        // pass data to TransactionService
-        $this->transactionService->createTransaction( $validated, 'withdrawal');
+        // pass data to TransactionService to create transaction
+        $transaction = $this->transactionService->createTransaction($validated, 'withdrawal');
 
-        $this->otpService->sendOtp('+855962059095');
+        // pass data to checkoutService to create checkout
+        $checkout = $this->checkoutService->createCheckout($transaction);
 
-        $this->redirect('/withdraw', navigate: true);
+        $this->redirect(route('checkout', $transaction->reference_code), navigate: true);
+
     }
     #[On('delete-bank-account')]
     public function deleteBankAccount($id)
