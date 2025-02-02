@@ -1,3 +1,0 @@
-<div>
-    @dd($referenceCode)
-</div>

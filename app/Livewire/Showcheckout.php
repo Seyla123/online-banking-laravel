@@ -2,11 +2,11 @@
 
 namespace App\Livewire;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
-use App\Models\Checkout;
 class Showcheckout extends Component
 {
-    public Checkout $checkout;
+    #[Layout('components.layouts.no-layout')]
     public $referenceCode;
     public function mount($referenceCode)
     {
@@ -14,6 +14,6 @@ class Showcheckout extends Component
     }
     public function render()
     {
-        return view('livewire.pages.checkout');
+        return view('livewire.pages.show-checkout');
     }
 }
