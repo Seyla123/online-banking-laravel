@@ -3,7 +3,7 @@
     timeLeft: 60,
     submitCode() {
         if (this.otpCode.length == 6) {
-            alert('dafd');
+            $wire.submitVerifyCode(this.otpCode);
             this.otpCode = '';
         }
     },
@@ -42,7 +42,7 @@
                     x-model="otpCode" placeholder="បញ្ជូលលេខកូដ" @input="submitCode()" />
             </div>
             @error('otpCode')
-                <span class="text-red-400">លេខកូដមិនត្រឹមត្រូវទេ!</span>
+                <span class="text-red-400">លេខកូដមិនត្រឹមត្រូវទេ! {{$message}}</span>
             @enderror
         </div>
         {{-- resend otp --}}
