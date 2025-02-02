@@ -41,4 +41,9 @@ class CheckoutService
 
         return $transaction->checkout;
     }
+
+    public function updateCheckout(Checkout $checkout, array $data): Checkout
+    {
+        return $this->repository->update($checkout, $data);
+    }
 }

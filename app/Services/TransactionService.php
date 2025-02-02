@@ -103,5 +103,28 @@ class TransactionService
     {
         return Str::uuid();
     }
-    
+    public function confirmTransaction(Transaction $transaction)
+    {
+        if(!$transaction){
+            throw new \Exception('Transaction not found');
+        }
+
+        // update balance in wallet
+        $this->walletService->updateBanlance($transaction);
+        
+    }
+
+    public function checkTransaction(string $referenceCode): Transaction
+    {
+        $transaction = Transaction::where('reference_code', $referenceCode)->first();
+        if(!$transaction){
+            throw new \Exception('Transaction not found');
+        }
+        
+        // check if checkout exists or expired
+        $this->checkoutService->checkIfCheckoutExistsOrExpired($transaction);
+
+        return $transaction;
+    }
+
 }

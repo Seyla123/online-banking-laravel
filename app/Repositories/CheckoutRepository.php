@@ -12,4 +12,8 @@ class CheckoutRepository implements CheckoutRepositoryInterface
     {
         return Auth::user()->checkouts()->create($data);
     }
+    public function update(Checkout $checkout, array $data): bool
+    {
+        return $checkout->update($data);
+    }
 }

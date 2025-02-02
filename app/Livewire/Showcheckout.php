@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Checkout;
 use App\Models\Transaction;
 use App\Services\CheckoutService;
+use App\Services\TransactionService;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 class Showcheckout extends Component
@@ -13,14 +14,16 @@ class Showcheckout extends Component
     public $referenceCode;
     public Transaction $transaction;
     private CheckoutService $checkoutService;
-    public function boot(CheckoutService $checkoutService)
+    private TransactionService $transactionService;
+    public function boot(CheckoutService $checkoutService, TransactionService $transactionService)
     {
         $this->checkoutService = $checkoutService;
+        $this->transactionService = $transactionService;
     }
     public function mount($referenceCode)
     {
         // check if transaction exists
-        $transaction = Transaction::where('reference_code', $referenceCode)->first();
+        $transaction = $this->transactionService->checkTransaction($referenceCode);
 
         if (!$transaction)
             abort(404);
@@ -41,7 +44,11 @@ class Showcheckout extends Component
                 $otpCode
             );
 
-            return redirect()->route('/checkout/success', $this->transaction->reference_code);
+            // confirm transaction and update balance in wallet
+            $this->transactionService->confirmTransaction($this->transaction);
+
+            // return redirect()->route('/checkout/success', $this->transaction->reference_code);
+            $this->redirect('/withdraw', navigate: true);
 
         } catch (\Throwable $th) {
 

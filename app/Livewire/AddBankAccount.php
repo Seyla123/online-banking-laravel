@@ -26,14 +26,14 @@ class AddBankAccount extends Component
         $validated = $this->validate(AddBankAccountValidateRules::rules());
 
         //pass data to BankAccountService
-       $bankAccountCreated = $this->bankAccountService->createBankAccount($validated);
-       
-       // if created successfully, redirect to withdraw page
-       if($bankAccountCreated){
-           $this->redirect('/withdraw', navigate: true);
-           return;
-       }
-       // if failed, redirect back to add bank account page
+        $bankAccountCreated = $this->bankAccountService->createBankAccount($validated);
+
+        // if created successfully, redirect to withdraw page
+        if ($bankAccountCreated) {
+            $this->redirect('/withdraw', navigate: true);
+            return;
+        }
+        // if failed, redirect back to add bank account page
         $this->redirect('/add-bank-account', navigate: true);
 
     }
