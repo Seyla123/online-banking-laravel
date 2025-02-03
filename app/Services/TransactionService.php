@@ -122,6 +122,7 @@ class TransactionService
             $this->checkoutService->confirmCheckout($transaction->checkout);
 
             DB::commit();
+            
         } catch (\Throwable $th) {
 
             DB::rollBack();

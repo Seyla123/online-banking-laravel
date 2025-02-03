@@ -1,6 +1,8 @@
 <?php
 
 use App\Livewire\AddBankAccount;
+use App\Livewire\CheckoutFail;
+use App\Livewire\CheckoutSuccess;
 use App\Livewire\Showcheckout;
 use App\Livewire\Withdraw;
 use Illuminate\Support\Facades\Route;
@@ -16,7 +18,14 @@ Route::get('/wallet', function () {
     return 'wallet';
 })->name('wallet');
 
-Route::get('checkout/{referenceCode}', Showcheckout::class)->middleware(['auth', 'verified'])->name('checkout');
+// checkout
+Route::prefix('checkout')->group(function () {
+    Route::get('/success/{transaction:reference_code}', CheckoutSuccess::class)->name('checkout.success');
+    
+    Route::get('/failed', CheckoutFail::class)->name('checkout.fail');
+
+    Route::get('/{referenceCode}', Showcheckout::class)->name('checkout');
+});
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])

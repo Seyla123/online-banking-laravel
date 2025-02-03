@@ -2,14 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Livewire\NoLayout;
 use App\Models\Transaction;
 use App\Services\CheckoutService;
 use App\Services\TransactionService;
-use Livewire\Attributes\Layout;
-use Livewire\Component;
-class Showcheckout extends Component
+
+class Showcheckout extends NoLayout
 {
-    #[Layout('components.layouts.no-layout')]
     public $referenceCode;
     public Transaction $transaction;
     private CheckoutService $checkoutService;
@@ -19,10 +18,8 @@ class Showcheckout extends Component
         $this->checkoutService = $checkoutService;
         $this->transactionService = $transactionService;
     }
-    public function mount($referenceCode)
+    public function mount()
     {
-        $this->referenceCode = $referenceCode;
-        
         try {
             
             // check if transaction exists and check if checkout exists or expired
@@ -32,7 +29,7 @@ class Showcheckout extends Component
 
         } catch (\Throwable $th) {
 
-            $this->redirect('/withdraw', navigate: true);
+            $this->redirectRoute('checkout.fail', navigate: true);
 
         }
     }
@@ -48,8 +45,11 @@ class Showcheckout extends Component
             // confirm transaction
             $this->transactionService->confirmTransaction($this->transaction);
 
-            // return redirect()->route('/checkout/success', $this->transaction->reference_code);
-            $this->redirectRoute('withdraw', navigate: true);
+            // redirect to checkout success
+            $this->redirect(route('checkout.success', [
+                'transaction' => $this->transaction
+            ]), navigate: true);
+
 
         } catch (\Throwable $th) {
 
