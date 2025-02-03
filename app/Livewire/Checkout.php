@@ -7,7 +7,7 @@ use App\Models\Transaction;
 use App\Services\CheckoutService;
 use App\Services\TransactionService;
 
-class Showcheckout extends NoLayout
+class Checkout extends NoLayout
 {
     public $referenceCode;
     public Transaction $transaction;
@@ -63,6 +63,6 @@ class Showcheckout extends NoLayout
     }
     public function render()
     {
-        return view('livewire.pages.show-checkout');
+        return view('livewire.pages.checkout');
     }
 }

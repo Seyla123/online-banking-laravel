@@ -3,7 +3,7 @@
 use App\Livewire\AddBankAccount;
 use App\Livewire\CheckoutFail;
 use App\Livewire\CheckoutSuccess;
-use App\Livewire\Showcheckout;
+use App\Livewire\Checkout;
 use App\Livewire\Withdraw;
 use Illuminate\Support\Facades\Route;
 
@@ -24,7 +24,7 @@ Route::prefix('checkout')->group(function () {
     
     Route::get('/failed', CheckoutFail::class)->name('checkout.fail');
 
-    Route::get('/{referenceCode}', Showcheckout::class)->name('checkout');
+    Route::get('/{referenceCode}', Checkout::class)->name('checkout');
 });
 
 Route::view('profile', 'profile')
