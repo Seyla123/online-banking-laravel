@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Services;
 
@@ -6,7 +6,7 @@ use App\Models\Checkout;
 use App\Models\Transaction;
 use App\Repositories\CheckoutRepository;
 
-class CheckoutService 
+class CheckoutService
 {
     private CheckoutRepository $repository;
     public function __construct(CheckoutRepository $repository)
@@ -37,7 +37,7 @@ class CheckoutService
      */
     public function verifyOtpCheckout(Checkout $checkout, string $otp): Checkout
     {
-        if($checkout->otp_code != $otp){
+        if ($checkout->otp_code != $otp) {
             throw new \Exception('លេខកូដ OTP មិនត្រឹមត្រូវ');
         }
         return $checkout;
@@ -53,6 +53,9 @@ class CheckoutService
         if (!$transaction->checkout) {
             throw new \Exception('រកមិនឃើញ Checkout មួយនេះទេ');
         }
+        if ($transaction->checkout->status !== 'pending') {
+            throw new \Exception('Checkout ត្រូវបានប្រើរួចហើយ');
+        }
         if ($transaction->checkout->expired_at < now()) {
             throw new \Exception('Checkout ត្រូវបានផុតកំណត់');
         }
@@ -67,7 +70,7 @@ class CheckoutService
     public function confirmCheckout(Checkout $checkout)
     {
         return $this->repository->update($checkout, [
-            'status'=>'completed',
+            'status' => 'completed',
             'otp_code' => null
         ]);
     }
