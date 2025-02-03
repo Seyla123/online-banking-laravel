@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Repositories\WalletRepository;
 use App\Services\BankAccountService;
 use App\Services\CheckoutService;
-use App\Services\OtpService;
 use App\Services\TransactionService;
 use App\Validations\WithdrawValidateRules;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +47,10 @@ class Withdraw extends Component
         // pass data to checkoutService to create checkout
         $this->checkoutService->createCheckout($transaction);
 
-        $this->redirect(route('checkout', $transaction->reference_code), navigate: true);
+        // if success redirect to checkout to verify the transaction
+        $this->redirect(route('checkout', [
+            'referenceCode' => $transaction->reference_code
+        ]), navigate: true);
 
     }
     #[On('delete-bank-account')]
@@ -67,7 +69,7 @@ class Withdraw extends Component
         ]);
 
         // if primary bank account is not set, set it to the first bank account
-        $primaryBankAccount = $primaryBankAccount->bank_account_id ?? $user->bankAccounts[0]->id;
+        $primaryBankAccount = $user->primaryBankAccount->bankAccount ? $user->primaryBankAccount->bank_account_id : $user->bankAccounts[0]->id;
 
         // get wallet 
         $wallet = $this->walletRepository->getWallet();

@@ -3,13 +3,12 @@
 namespace App\Services;
 
 use App\Interfaces\TransactionInterface;
-use App\Models\Checkout;
 use App\Models\Transaction;
 use App\Repositories\TransactionRepository;
 use App\Services\Transactions\DepositTransaction;
 use App\Services\Transactions\TransferTransaction;
 use App\Services\Transactions\WithdrawTransaction;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 class TransactionService
 {
@@ -38,7 +37,7 @@ class TransactionService
      * create transaction base on transaction type ('deposit', 'withdrawal', 'transfer')
      * @param array $data
      * @param string $transactionType type of transaction ('deposit', 'withdrawal', 'transfer')
-     * @return void
+     * @return ?Transaction
      */
     public function createTransaction(array $data, string $transactionType): ?Transaction
     {
@@ -57,18 +56,14 @@ class TransactionService
             // Determine which transaction type to create
             $transaction = $this->getTransactionInstance($transactionType);
 
-
             // Process the transaction and get the created transaction
             return $transaction->process($data);
 
-            // pass created transaction to WalletService 
-            // to be able to update (add or subtract) the balance in the wallet
-            // $this->walletService->updateBanlance($createdTransaction);
-
-            // session()->flash('success', 'ការដកប្រាក់បានជោគជ័យ');
         } catch (\Exception $e) {
+
             // Log the error for debugging purposes
             \Log::error('Transaction creation failed: ' . $e->getMessage());
+
             if (config('app.env') == 'production') {
                 session()->flash('fail', 'បរាជ័យក្នុងការដកប្រាក់');
             } else {
@@ -92,7 +87,7 @@ class TransactionService
             case 'transfer':
                 return $this->transferTransaction;
             default:
-                throw new \InvalidArgumentException('Invalid transaction type');
+                throw new \InvalidArgumentException('Transaction type មិនត្រឹមត្រូវទេ');
         }
     }
     /**
@@ -103,24 +98,50 @@ class TransactionService
     {
         return Str::uuid();
     }
+    /**
+     * confirm transaction ,update wallet balance and update transaction status and checkout status
+     * @param \App\Models\Transaction $transaction
+     * @throws \Exception
+     * @return void
+     */
     public function confirmTransaction(Transaction $transaction)
     {
-        if(!$transaction){
-            throw new \Exception('Transaction not found');
+        DB::beginTransaction();
+        try {
+            if (!$transaction) {
+                throw new \Exception('រកមិនឃើញ transaction មួយនេះទេ');
+            }
+
+            // update balance in wallet
+            $this->walletService->updateBanlance($transaction);
+
+            // update transaction status
+            $this->repository->update($transaction, ['status' => 'confirmed']);
+
+            // update checkout status
+            $this->checkoutService->confirmCheckout($transaction->checkout);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+
+            DB::rollBack();
+            throw new \Exception($th->getMessage());
         }
 
-        // update balance in wallet
-        $this->walletService->updateBanlance($transaction);
-        
     }
-
+    /**
+     * check transaction exists or checkout exists or expired
+     * @param string $referenceCode
+     * @throws \Exception
+     * @return Transaction
+     */
     public function checkTransaction(string $referenceCode): Transaction
     {
         $transaction = Transaction::where('reference_code', $referenceCode)->first();
-        if(!$transaction){
-            throw new \Exception('Transaction not found');
+        if (!$transaction) {
+            throw new \Exception('រកមិនឃើញ transaction មួយនេះទេ');
         }
-        
+
         // check if checkout exists or expired
         $this->checkoutService->checkIfCheckoutExistsOrExpired($transaction);
 

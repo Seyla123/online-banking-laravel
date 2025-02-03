@@ -13,6 +13,11 @@ class CheckoutService
     {
         $this->repository = $repository;
     }
+    /**
+     * create checkout for confirm transaction
+     * @param \App\Models\Transaction $transaction
+     * @return Checkout
+     */
     public function createCheckout(Transaction $transaction): Checkout
     {
         return $this->repository->create(
@@ -23,27 +28,47 @@ class CheckoutService
             ]
         );
     }
+    /**
+     * verify otp checkout 
+     * @param \App\Models\Checkout $checkout
+     * @param string $otp
+     * @throws \Exception
+     * @return Checkout
+     */
     public function verifyOtpCheckout(Checkout $checkout, string $otp): Checkout
     {
         if($checkout->otp_code != $otp){
-            throw new \Exception('Invalid OTP code');
+            throw new \Exception('លេខកូដ OTP មិនត្រឹមត្រូវ');
         }
         return $checkout;
     }
+    /**
+     * check if checkout exists or expired
+     * @param \App\Models\Transaction $transaction
+     * @throws \Exception
+     * @return \App\Models\Checkout
+     */
     public function checkIfCheckoutExistsOrExpired(Transaction $transaction): Checkout
     {
         if (!$transaction->checkout) {
-            throw new \Exception('Checkout not found');
+            throw new \Exception('រកមិនឃើញ Checkout មួយនេះទេ');
         }
         if ($transaction->checkout->expired_at < now()) {
-            throw new \Exception('Checkout is expired');
+            throw new \Exception('Checkout ត្រូវបានផុតកំណត់');
         }
 
         return $transaction->checkout;
     }
-
-    public function updateCheckout(Checkout $checkout, array $data): Checkout
+    /**
+     * confirmCheckout , atfer confirm transaction update checkout status and set otp_code to null
+     * @param \App\Models\Checkout $checkout
+     * @return bool
+     */
+    public function confirmCheckout(Checkout $checkout)
     {
-        return $this->repository->update($checkout, $data);
+        return $this->repository->update($checkout, [
+            'status'=>'completed',
+            'otp_code' => null
+        ]);
     }
 }

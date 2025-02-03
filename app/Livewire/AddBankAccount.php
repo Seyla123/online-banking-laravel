@@ -3,10 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Bank;
-use App\Repositories\WalletRepository;
 use App\Services\BankAccountService;
 use App\Validations\AddBankAccountValidateRules;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 

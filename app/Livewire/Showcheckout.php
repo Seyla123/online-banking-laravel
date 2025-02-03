@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\Checkout;
 use App\Models\Transaction;
 use App\Services\CheckoutService;
 use App\Services\TransactionService;
@@ -22,33 +21,35 @@ class Showcheckout extends Component
     }
     public function mount($referenceCode)
     {
-        // check if transaction exists
-        $transaction = $this->transactionService->checkTransaction($referenceCode);
-
-        if (!$transaction)
-            abort(404);
-
         $this->referenceCode = $referenceCode;
-        $this->transaction = $transaction;
+        
+        try {
+            
+            // check if transaction exists and check if checkout exists or expired
+            $transaction = $this->transactionService->checkTransaction($this->referenceCode);
+
+            $this->transaction = $transaction;
+
+        } catch (\Throwable $th) {
+
+            $this->redirect('/withdraw', navigate: true);
+
+        }
     }
     public function submitVerifyCode(string $otpCode)
     {
         try {
-
-            // check if checkout exists or expired
-            $checkout = $this->checkoutService->checkIfCheckoutExistsOrExpired($this->transaction);
-
-            // check if otp is correct 
+            // Verify Otp
             $this->checkoutService->verifyOtpCheckout(
-                $checkout,
+                $this->transaction->checkout,
                 $otpCode
             );
 
-            // confirm transaction and update balance in wallet
+            // confirm transaction
             $this->transactionService->confirmTransaction($this->transaction);
 
             // return redirect()->route('/checkout/success', $this->transaction->reference_code);
-            $this->redirect('/withdraw', navigate: true);
+            $this->redirectRoute('withdraw', navigate: true);
 
         } catch (\Throwable $th) {
 
