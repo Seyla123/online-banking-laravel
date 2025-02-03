@@ -16,5 +16,8 @@ class TransactionRepository implements TransactionRepositoryInterface
     {
         return Transaction::findOrFail($id);
     }
-    
+    public function update(Transaction $transaction, array $data): bool
+    {
+        return $transaction->update($data);
+    }
 }
