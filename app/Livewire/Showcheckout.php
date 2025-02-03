@@ -57,7 +57,10 @@ class Showcheckout extends NoLayout
 
         }
     }
-
+    public function resendOtpCode()
+    {
+        dd('clicked resend otp');
+    }
     public function render()
     {
         return view('livewire.pages.show-checkout');

@@ -48,7 +48,7 @@
         {{-- resend otp --}}
         <div class="flex flex-col gap-4 justify-center items-center w-full">
             <p>Don't receive the code?</p>
-            <button :disable="timeLeft > 0" :class="timeLeft > 0 ? 'text-gray-300' : ''"
+            <button :disable="timeLeft > 0" wire:click="resendOtpCode()" :class="timeLeft > 0 ? 'text-gray-300' : ''"
                 x-text="
             timeLeft > 0 ? 'Resend Code ' + timeLeft + 's' : 'Resend Code'"></button>
         </div>
