@@ -116,13 +116,16 @@ class TransactionService
             $this->walletService->updateBanlance($transaction);
 
             // update transaction status
-            $this->repository->update($transaction, ['status' => 'confirmed']);
+            if(!$this->repository->update($transaction, ['status' => 'completed'])){
+                throw new \Exception('រកមិនឃើញ transaction មួយនេះទេ');
+            }
+            
 
             // update checkout status
             $this->checkoutService->confirmCheckout($transaction->checkout);
 
             DB::commit();
-            
+
         } catch (\Throwable $th) {
 
             DB::rollBack();

@@ -17,6 +17,7 @@ class Transaction extends Model
         'destination_wallet_id',
         'reference_code',
         'bank_account_id',
+        'status'
     ];
     
     public function sourceWallet()
