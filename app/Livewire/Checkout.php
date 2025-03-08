@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Livewire\NoLayout;
 use App\Models\Transaction;
 use App\Services\CheckoutService;
 use App\Services\TransactionService;

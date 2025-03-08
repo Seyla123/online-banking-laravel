@@ -1,5 +1,5 @@
 <div class="max-w-2xl mx-auto space-y-6" x-data="{
-    amount: '',
+    amount: $wire.amount == 0 ? '' : $wire.amount,
     selectedBankAccount: @js($primaryBankAccount), 
     errors: {
         amount: '',

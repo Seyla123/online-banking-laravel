@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Livewire\NoLayout;
 use App\Models\Transaction;
 
 class CheckoutSuccess extends NoLayout

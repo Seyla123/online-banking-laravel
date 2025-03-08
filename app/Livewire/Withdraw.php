@@ -45,11 +45,11 @@ class Withdraw extends Component
         $transaction = $this->transactionService->createTransaction($validated, 'withdrawal');
 
         // pass data to checkoutService to create checkout
-        $this->checkoutService->createCheckout($transaction);
+        // $this->checkoutService->createCheckout($transaction);
 
         // if success redirect to checkout to verify the transaction
-        $this->redirect(route('checkout', [
-            'referenceCode' => $transaction->reference_code
+        $this->redirect(route('send-otp-option', [
+            'transaction' => $transaction->reference_code
         ]), navigate: true);
 
     }
