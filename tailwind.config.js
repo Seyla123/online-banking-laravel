@@ -13,6 +13,21 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                battambang: ["Battambang", ...defaultTheme.fontFamily.sans],
+            },
+            colors: {
+                main: {
+                    100: '#F8E4E4',
+                    200: '#F5C2C2',
+                    300: '#F0A3A3',
+                    400: '#EC9999',
+                    500: '#EA6B6B',
+                    600: '#E75555',
+                    700: '#E44C4C',
+                    800: '#E24040',
+                    900: '#E00000',
+                    DEFAULT: '#E00000',
+                },
             },
         },
     },
