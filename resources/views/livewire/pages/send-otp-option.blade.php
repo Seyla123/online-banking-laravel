@@ -24,13 +24,13 @@
             {{-- amount --}}
             <div class="flex justify-between">
                 <p class="text-gray-500">Amount</p>
-                <strong>$1.00</strong>
+                <strong>${{ $amount }}</strong>
             </div>
             <hr>
             {{-- to account --}}
             <div class="flex justify-between">
                 <p class="text-gray-500">To Account</p>
-                <strong>7000****850</strong>
+                <strong>{{ $walletNumber }}</strong>
             </div>
         </div>
 
@@ -38,14 +38,14 @@
         <div class="w-full">
 
             {{-- vai phone --}}
-            <x-send-otp-optios-card title="096******95" name="phone" description="Send OTP via phone number">
+            <x-send-otp-optios-card :title="$phone" name="phone" description="Send OTP via phone number">
                 <x-slot:icon>
                     <i data-lucide="message-square-text"></i>
                 </x-slot:icon>
             </x-send-otp-optios-card>
 
             {{-- vai email --}}
-            <x-send-otp-optios-card title="******758@gmail.com" name="email" description="Send OTP via email">
+            <x-send-otp-optios-card :title="$email" name="email" description="Send OTP via email">
                 <x-slot:icon>
                     <i data-lucide="mail"></i>
                 </x-slot:icon>

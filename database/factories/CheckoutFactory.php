@@ -23,7 +23,7 @@ class CheckoutFactory extends Factory
         return [
             'transaction_id' => $transaction->id,
             'user_id' => $user->id,
-            'otp_code' => $this->faker->unique()->numerify('##########'),
+            'otp_code' => $this->faker->unique()->numerify('#####'),
             'status' => $this->faker->randomElement(['pending', 'completed', 'failed']),
         ];
     }

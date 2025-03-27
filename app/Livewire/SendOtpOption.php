@@ -14,8 +14,17 @@ class SendOtpOption extends NoLayout
     }
     public function render()
     {
-        $accountNumber = substr_replace($this->transaction->account_number, '******', 3, -3);
-        // dd($this->transaction, $accountNumber);
-        return view('livewire.pages.send-otp-option');
+        //Or you can call getFormattedWalletNumberHideAttribute(), getFormattedPhoneHideAttribute(), getFormattedEmailHideAttribute()
+        $walletNumber = $this->transaction->sourceWallet->formatted_wallet_number_hide;
+        $phone = $this->transaction->sourceWallet->user->formatted_phone_hide;
+        $email = $this->transaction->sourceWallet->user->formatted_email_hide;
+
+        // dd($walletNumber);//2398759853
+        return view('livewire.pages.send-otp-option', [
+            'walletNumber' => $walletNumber,
+            'amount' => $this->transaction->amount,
+            'email' => $email,
+            'phone' => $phone
+        ]);
     }
 }

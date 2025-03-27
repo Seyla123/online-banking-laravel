@@ -69,7 +69,7 @@ class Withdraw extends Component
         ]);
 
         // if primary bank account is not set, set it to the first bank account
-        $primaryBankAccount = $user->primaryBankAccount->bankAccount ? $user->primaryBankAccount->bank_account_id : $user->bankAccounts[0]->id;
+        $primaryBankAccount = $user->primaryBankAccount?->bank_account_id ?? $user->bankAccounts->first()?->id;
 
         // get wallet 
         $wallet = $this->walletRepository->getWallet();

@@ -1,6 +1,6 @@
 <div class="max-w-2xl mx-auto space-y-6" x-data="{
     amount: $wire.amount == 0 ? '' : $wire.amount,
-    selectedBankAccount: @js($primaryBankAccount), 
+    selectedBankAccount: @js($primaryBankAccount),
     errors: {
         amount: '',
         bankAccount: ''
@@ -63,7 +63,7 @@
     {{-- verify phone --}}
     <x-alert-verify-phone :phone="auth()->user()->phone" />
 
-    {{-- input withdraw amount section--}}
+    {{-- input withdraw amount section --}}
     <section class="space-y-2">
         <h2 class="font-semibold text-gray-800 leading-tight">
             សូមកំណត់ចំនួនទឹកប្រាក់ ៖​
@@ -87,13 +87,13 @@
         </div>
     </section>
 
-    {{-- bank account section--}}
+    {{-- bank account section --}}
     <section class="space-y-2">
         <div class="flex justify-between">
             <h2 class="font-semibold text-gray-800 leading-tight">
                 ជ្រើសរើសគណនីធនាគារដកប្រាក់ ៖​
             </h2>
-            {{-- click to add bank account--}}
+            {{-- click to add bank account --}}
             <a wire:navigate href="{{ route('add-bank-account') }}"
                 class="flex gap-1 items-center transition-transform duration-300 transform hover:scale-105">
                 <h2 class="font-semibold text-gray-800 leading-tight">
@@ -103,14 +103,17 @@
             </a>
         </div>
         <div class="space-y-1 lg:space-y-2">
-            @foreach ($bankAccounts as $bankAccount)
-                <x-bank-account-card 
-                    :accountName="$bankAccount->account_name" :accountNumber="$bankAccount->account_number" 
-                    :bank="$bankAccount->bank->bank_name" :bankAccountId="$bankAccount->id"
-                    @click="selectBankAccount({{ $bankAccount->id }})" 
-                    wire:key="{{ $bankAccount->id }}"
-                />
-            @endforeach
+            @forelse ($bankAccounts as $bankAccount)
+                <x-bank-account-card :accountName="$bankAccount->account_name" :accountNumber="$bankAccount->account_number" :bank="$bankAccount->bank->bank_name" :bankAccountId="$bankAccount->id"
+                    @click="selectBankAccount({{ $bankAccount->id }})" wire:key="{{ $bankAccount->id }}" />
+            @empty
+                <div class="min-h-[150px] flex items-center justify-center bg-gray-100 rounded-lg shadow-md p-4">
+                    <div class="flex flex-col items-center gap-2">
+                        <p class="text-center text-gray-600 text-lg font-semibold">គ្មានគណនី</p>
+
+                    </div>
+                </div>
+            @endforelse
             <!-- Alpine Error Message -->
             <p x-show="errors.bankAccount" x-text="errors.bankAccount" class="text-red-500 text-sm mt-2">
             </p>
@@ -136,4 +139,4 @@
             <x-modal-error :message="session('fail')" />
         </div>
     @endif
-</form>
+    </form>

@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use App\Events\UserRegistered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -27,10 +28,14 @@ new #[Layout('layouts.guest')] class extends Component {
 
         $validated['password'] = Hash::make($validated['password']);
 
-        event(new Registered(($user = User::create($validated))));
-
+        $user = User::create($validated);
+        $user->wallet()->create();
+        event(new Registered($user));
+        
         Auth::login($user);
-
+        
+        // event(new UserRegistered($user));
+        // dd($user);
         $this->redirect(route('wallet', absolute: false), navigate: true);
     }
 }; ?>

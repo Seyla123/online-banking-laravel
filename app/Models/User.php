@@ -66,4 +66,42 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function getFormattedPhoneHideAttribute(): string|null
+    {
+        $number = $this->phone; // Assuming 'phone' column stores the raw number
+
+        if (!$number) {
+            return null; // Return null if no phone number
+        }
+
+        // Ensure it's a string
+        $number = strval($number);
+        // Extract parts based on format
+        $countryCode = '+855';    // Cambodia country code
+        $prefix = substr($number, 0, 2);   // First 2 digits: "17"
+        $part1 = substr($number, 2, 3);    // Next 3 digits: "004"
+        $part2 = '*****';                    // Mask the middle part
+        $part3 = substr($number, -2);      // Last 2 digits: "79"
+
+        // Return formatted string
+        return "{$countryCode} {$prefix} {$part1} {$part2} {$part3}";
+    }
+    public function getFormattedEmailHideAttribute(): string|null
+    {
+        $email = $this->email;
+
+        if (!$email) {
+            return null; // Return null if no email
+        }
+
+        // Ensure it's a string
+        $email = strval($email);
+        // Extract parts based on format
+        $localPart = substr($email, 0, 5);
+        $domain = substr($email, strpos($email, '@') + 1);
+
+        // Return formatted string
+        return "{$localPart}*****@{$domain}";
+    }
 }

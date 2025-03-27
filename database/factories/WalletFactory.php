@@ -19,8 +19,8 @@ class WalletFactory extends Factory
     {
         return [
             'user_id'=>User::inRandomOrder()->first()->id,
-            'wallet_number' => $this->faker->unique()->numerify('##########'), 
-            'balance' => $this->faker->randomFloat(2, 0, 9999),
+            'wallet_number' => $this->faker->unique()->numerify('########'), 
+            'balance' => $this->faker->randomFloat(2, 0, 999.99),
         ];
     }
 }
