@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Transaction;
+use App\Models\Checkout as CheckoutModel;
 use App\Services\CheckoutService;
 use App\Services\TransactionService;
 
@@ -10,6 +11,7 @@ class Checkout extends NoLayout
 {
     public $referenceCode;
     public Transaction $transaction;
+    public CheckoutModel $checkout;
     private CheckoutService $checkoutService;
     private TransactionService $transactionService;
     public function boot(CheckoutService $checkoutService, TransactionService $transactionService)
@@ -20,11 +22,14 @@ class Checkout extends NoLayout
     public function mount()
     {
         try {
-            
-            // check if transaction exists and check if checkout exists or expired
+            // check if transaction exists
             $transaction = $this->transactionService->checkTransaction($this->referenceCode);
 
+            // check if checkout exists or expired
+            $checkout = $this->checkoutService->checkIfCheckoutExistsOrExpired($transaction);
+            
             $this->transaction = $transaction;
+            $this->checkout = $checkout;
 
         } catch (\Throwable $th) {
 

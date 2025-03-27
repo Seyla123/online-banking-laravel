@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Checkout;
 use App\Models\Transaction;
 use App\Repositories\CheckoutRepository;
+use Illuminate\Support\Facades\Auth;
 
 class CheckoutService
 {
@@ -13,6 +14,7 @@ class CheckoutService
     {
         $this->repository = $repository;
     }
+
     /**
      * create checkout for confirm transaction
      * @param \App\Models\Transaction $transaction
@@ -28,6 +30,7 @@ class CheckoutService
             ]
         );
     }
+
     /**
      * verify otp checkout 
      * @param \App\Models\Checkout $checkout
@@ -37,11 +40,15 @@ class CheckoutService
      */
     public function verifyOtpCheckout(Checkout $checkout, string $otp): Checkout
     {
+        if ($checkout->status !== 'pending' || $checkout->expired_at < now() || $checkout->otp_code == null) {
+            throw new \Exception('Checkout ត្រូវបានប្រើរួចហើយ');
+        }
         if ($checkout->otp_code != $otp) {
             throw new \Exception('លេខកូដ OTP មិនត្រឹមត្រូវ');
         }
         return $checkout;
     }
+
     /**
      * check if checkout exists or expired
      * @param \App\Models\Transaction $transaction
@@ -50,18 +57,21 @@ class CheckoutService
      */
     public function checkIfCheckoutExistsOrExpired(Transaction $transaction): Checkout
     {
-        if (!$transaction->checkout) {
+        $checkout = $transaction->checkout;
+
+        if (!$checkout) {
             throw new \Exception('រកមិនឃើញ Checkout មួយនេះទេ');
         }
-        if ($transaction->checkout->status !== 'pending') {
+        if ($checkout->status !== 'pending') {
             throw new \Exception('Checkout ត្រូវបានប្រើរួចហើយ');
         }
-        if ($transaction->checkout->expired_at < now()) {
+        if ($checkout->expired_at < now()) {
             throw new \Exception('Checkout ត្រូវបានផុតកំណត់');
         }
 
-        return $transaction->checkout;
+        return $checkout;
     }
+    
     /**
      * confirmCheckout , atfer confirm transaction update checkout status and set otp_code to null
      * @param \App\Models\Checkout $checkout

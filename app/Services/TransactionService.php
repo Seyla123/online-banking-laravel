@@ -8,31 +8,22 @@ use App\Repositories\TransactionRepository;
 use App\Services\Transactions\DepositTransaction;
 use App\Services\Transactions\TransferTransaction;
 use App\Services\Transactions\WithdrawTransaction;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 class TransactionService
 {
-    private TransactionRepository $repository;
-    private WalletService $walletService;
-    private DepositTransaction $depositTransaction;
-    private WithdrawTransaction $withdrawTransaction;
-    private TransferTransaction $transferTransaction;
-    private CheckoutService $checkoutService;
+
     public function __construct(
-        TransactionRepository $repository,
-        WalletService $walletService,
-        DepositTransaction $depositTransaction,
-        WithdrawTransaction $withdrawTransaction,
-        TransferTransaction $transferTransaction,
-        CheckoutService $checkoutService
+        private TransactionRepository $repository,
+        private WalletService $walletService,
+        private DepositTransaction $depositTransaction,
+        private WithdrawTransaction $withdrawTransaction,
+        private TransferTransaction $transferTransaction,
+        private CheckoutService $checkoutService
     ) {
-        $this->repository = $repository;
-        $this->walletService = $walletService;
-        $this->depositTransaction = $depositTransaction;
-        $this->withdrawTransaction = $withdrawTransaction;
-        $this->transferTransaction = $transferTransaction;
-        $this->checkoutService = $checkoutService;
     }
+
     /**
      * create transaction base on transaction type ('deposit', 'withdrawal', 'transfer')
      * @param array $data
@@ -71,6 +62,17 @@ class TransactionService
             }
         }
     }
+
+    /**
+     * Create a withdrawal transaction
+     * @param array $data
+     * @return ?Transaction
+     */
+    public function createWithdrawTransaction(array $data): ?Transaction
+    {
+        return $this->createTransaction($data, 'withdrawal');
+    }
+
     /**
      * get transaction instance ('deposit', 'withdrawal', 'transfer')
      * @param string $transactionType
@@ -90,6 +92,7 @@ class TransactionService
                 throw new \InvalidArgumentException('Transaction type មិនត្រឹមត្រូវទេ');
         }
     }
+
     /**
      * gerate unique reference code
      * @return string
@@ -98,6 +101,7 @@ class TransactionService
     {
         return Str::uuid();
     }
+
     /**
      * confirm transaction ,update wallet balance and update transaction status and checkout status
      * @param \App\Models\Transaction $transaction
@@ -116,10 +120,9 @@ class TransactionService
             $this->walletService->updateBanlance($transaction);
 
             // update transaction status
-            if(!$this->repository->update($transaction, ['status' => 'completed'])){
+            if (!$this->repository->update($transaction, ['status' => 'completed'])) {
                 throw new \Exception('រកមិនឃើញ transaction មួយនេះទេ');
             }
-            
 
             // update checkout status
             $this->checkoutService->confirmCheckout($transaction->checkout);
@@ -133,6 +136,7 @@ class TransactionService
         }
 
     }
+
     /**
      * check transaction exists or checkout exists or expired
      * @param string $referenceCode
@@ -141,14 +145,13 @@ class TransactionService
      */
     public function checkTransaction(string $referenceCode): Transaction
     {
-        $transaction = Transaction::where('reference_code', $referenceCode)->first();
+        // check if transaction exists
+        $transaction = $this->repository->findByReferenceCode($referenceCode);
+
         if (!$transaction) {
             throw new \Exception('រកមិនឃើញ transaction មួយនេះទេ');
         }
-
-        // check if checkout exists or expired
-        $this->checkoutService->checkIfCheckoutExistsOrExpired($transaction);
-
+        
         return $transaction;
     }
 

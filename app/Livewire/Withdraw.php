@@ -41,13 +41,10 @@ class Withdraw extends Component
             WithdrawValidateRules::messages()
         );
 
-        // pass data to TransactionService to create transaction
-        $transaction = $this->transactionService->createTransaction($validated, 'withdrawal');
+        // pass data to TransactionService to create withdraw transaction
+        $transaction = $this->transactionService->createWithdrawTransaction($validated);
 
-        // pass data to checkoutService to create checkout
-        // $this->checkoutService->createCheckout($transaction);
-
-        // if success redirect to checkout to verify the transaction
+        // if success redirect to send otp option to verify code 
         $this->redirect(route('send-otp-option', [
             'transaction' => $transaction->reference_code
         ]), navigate: true);

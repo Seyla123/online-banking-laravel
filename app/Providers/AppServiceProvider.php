@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Events\UserRegistered;
 use App\Repositories\TransactionRepository;
 use App\Repositories\WalletRepository;
 use App\Services\CheckoutService;
@@ -50,8 +49,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Event::listen(
-            UserRegistered::class,
-        );
+
     }
 }
+
