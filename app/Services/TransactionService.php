@@ -56,7 +56,7 @@ class TransactionService
             \Log::error('Transaction creation failed: ' . $e->getMessage());
 
             if (config('app.env') == 'production') {
-                session()->flash('fail', 'បរាជ័យក្នុងការដកប្រាក់');
+                session()->flash('fail', __('operation_failed'));
             } else {
                 session()->flash('fail', $e->getMessage());
             }

@@ -40,11 +40,13 @@ class CheckoutService
      */
     public function verifyOtpCheckout(Checkout $checkout, string $otp): Checkout
     {
-        if ($checkout->status !== 'pending' || $checkout->expired_at < now() || $checkout->otp_code == null) {
-            throw new \Exception('Checkout ត្រូវបានប្រើរួចហើយ');
+        // Check for pending status and OTP validity
+        if ($checkout->status !== 'pending' || $checkout->expired_at < now() || !$checkout->otp_code) {
+            throw new \Exception(__('checkout_already_used_or_expired'));
         }
+
         if ($checkout->otp_code != $otp) {
-            throw new \Exception('លេខកូដ OTP មិនត្រឹមត្រូវ');
+            throw new \Exception(__('otp_incorrect'));
         }
         return $checkout;
     }
@@ -60,18 +62,18 @@ class CheckoutService
         $checkout = $transaction->checkout;
 
         if (!$checkout) {
-            throw new \Exception('រកមិនឃើញ Checkout មួយនេះទេ');
+            throw new \Exception(__('checkout_not_found'));
         }
         if ($checkout->status !== 'pending') {
-            throw new \Exception('Checkout ត្រូវបានប្រើរួចហើយ');
+            throw new \Exception(__('checkout_already_used'));
         }
         if ($checkout->expired_at < now()) {
-            throw new \Exception('Checkout ត្រូវបានផុតកំណត់');
+            throw new \Exception(__('checkout_expired'));
         }
 
         return $checkout;
     }
-    
+
     /**
      * confirmCheckout , atfer confirm transaction update checkout status and set otp_code to null
      * @param \App\Models\Checkout $checkout

@@ -49,7 +49,6 @@
     }
 }">
     {{-- header title --}}
-    {{ app()->getLocale() }}
     <x-slot name="header">
         {{ __('withdraw') }}
     </x-slot>
@@ -77,6 +76,7 @@
             @error('amount')
                 <x-input-error :messages="$errors->get('amount')" class="mt-2" />
             @enderror
+
             {{-- key amount input --}}
             <div class="grid grid-cols-4 gap-1" x-data="{ keysInput: [5, 10, 20, 50, 100, 200, 300, 500] }">
                 <template x-for="key in keysInput">
@@ -104,9 +104,17 @@
             </a>
         </div>
         <div class="space-y-1 lg:space-y-2">
+            {{-- bank account card --}}
             @forelse ($bankAccounts as $bankAccount)
-                <x-bank-account-card :accountName="$bankAccount->account_name" :accountNumber="$bankAccount->account_number" :bank="$bankAccount->bank->bank_name" :bankAccountId="$bankAccount->id"
-                    @click="selectBankAccount({{ $bankAccount->id }})" wire:key="{{ $bankAccount->id }}" />
+                <x-bank-account-card 
+                    wire:key="{{ $bankAccount->id }}" 
+                    :accountName="$bankAccount->account_name" 
+                    :accountNumber="$bankAccount->account_number"
+                    :bank="$bankAccount->bank->bank_name" 
+                    :bankAccountId="$bankAccount->id" 
+                    @click="selectBankAccount({{ $bankAccount->id }})" 
+                />
+            {{-- no bank account --}}
             @empty
                 <div class="min-h-[150px] flex items-center justify-center bg-gray-100 rounded-lg shadow-md p-4">
                     <div class="flex flex-col items-center gap-2">
@@ -122,9 +130,9 @@
     </section>
 
     {{-- submit button --}}
-    <div class="flex w-full justify-center pb-4 sticky bottom-0">
-        <x-primary-button type="button" @click="submitForm" class="w-full flex justify-center py-4">
-            <span wire:loading.remove>{{ __('withdraw_button') }}</span>
+    <div class="flex w-full justify-center pb-4 sticky bottom-0 ">
+        <x-primary-button type="button" @click="submitForm" class="w-full flex justify-center py-4 capitalize">
+            <span wire:loading.remove>{{ __('withdraw') }}</span>
             <span wire:loading>{{ __('processing') }}</span>
         </x-primary-button>
     </div>

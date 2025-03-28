@@ -18,10 +18,10 @@
     {{-- info --}}
     <div class="flex flex-col justify-start w-full">
         <strong class="text-sm lg:text-md uppercase">{{ $bank }}: {{ $accountName }}</strong>
-        <p class="text-sm text-gray-500">លេខគណនី​ : {{ $accountNumber }}</p>
+        <p class="text-sm text-gray-500">{{ __('account_number') }} : {{ $accountNumber }}</p>
     </div>
 
-    {{-- delete button , when click the modal confirm delete will show--}}
+    {{-- delete button , when click the modal confirm delete will show --}}
     <button x-show="selectedBankAccount !== {{ $bankAccountId }}" type="button"
         @click="event.stopPropagation();show = true">
         <img class="min-w-6" src="{{ asset('asset/trash.svg') }}" alt="delete">
@@ -38,7 +38,7 @@
     </button>
 
     {{-- modal delete confirmation --}}
-    <x-modal-confirm-delete :$bankAccountId :message="'តើអ្នកប្រាកដជាចង់លុបគណនី ' . strtoupper($bank) . ' : ' . strtoupper($accountName) . ' នេះឬទេ?'">
+    <x-modal-confirm-delete :$bankAccountId :message="__('confirm_delete_account_dynamic', ['accountName' => strtoupper($bank) . ' : ' . strtoupper($accountName)])">
     </x-modal-confirm-delete>
 
 </div>

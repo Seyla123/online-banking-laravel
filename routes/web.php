@@ -7,7 +7,9 @@ use App\Livewire\Checkout;
 use App\Livewire\SendOtpOption;
 use App\Livewire\Wallet;
 use App\Livewire\Withdraw;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 Route::view('/', 'welcome');
 
@@ -30,6 +32,19 @@ Route::prefix('checkout')->group(function () {
     Route::get('/{referenceCode}', Checkout::class)->name('checkout');
 });
 
+// language
+Route::get('language/{locale}', function ($locale) {
+
+    if (!in_array($locale, ['en', 'kh'])) {
+        abort(400);
+    }
+
+    session()->put('locale', $locale);
+    return redirect()->back();
+})->name('local');
+
+
+// profile
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');

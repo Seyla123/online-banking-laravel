@@ -76,7 +76,7 @@ class WalletService
     public function hasSufficientBalance(float $amount)
     {
         if ($amount > $this->repository->currentBalance()) {
-            throw new \Exception('ទឹកប្រាក់មិនគ្រប់គ្រាន់');
+            throw new \Exception(__('insufficient_funds'));
         }
         return true;
     }

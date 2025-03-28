@@ -22,7 +22,6 @@ new class extends Component {
         session()->put('locale', $locale);
     }
 }; ?>
-
 <nav x-data="{ open: false, languageOpen: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,9 +47,8 @@ new class extends Component {
 
             <!-- Right Side Controls -->
             <div class="flex items-center gap-4">
-                {{ app()->getLocale() }}
                 <!-- Language Selector -->
-                <div class="relative" x-data="{ currentLanguage: '{{ app()->getLocale() }}' }">
+                <div class="relative" x-data="{ currentLanguage: '{{ session()->get('locale') }}' }">
                     <button @click="languageOpen = !languageOpen"
                         class="flex items-center gap-1 text-gray-600 hover:text-gray-900 transition-colors"
                         x-text="currentLanguage === 'en' ? '{{ __('en') }}' : '{{ __('kh') }}'">
@@ -65,18 +63,20 @@ new class extends Component {
                     <div x-show="languageOpen" @click.away="languageOpen = false"
                         class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-100"
                         style="display: none">
-                        <button wire:click="changeLanguage('en')" @click="currentLanguage = 'en'; languageOpen = false"
+                        <a wire:navigate href="{{ route('local', ['locale' => 'en']) }}"
+                            @click="currentLanguage = 'en'; languageOpen = false"
                             class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
                             :class="{ 'bg-gray-50 font-medium': currentLanguage === 'en' }">
                             <span class="fi fi-us"></span>
-                            English
-                        </button>
-                        <button wire:click="changeLanguage('kh')" @click="currentLanguage = 'kh'; languageOpen = false"
+                            {{ __('english') }}
+                        </a>
+                        <a wire:navigate href="{{ route('local', ['locale' => 'kh']) }}"
+                            @click="currentLanguage = 'kh'; languageOpen = false"
                             class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
                             :class="{ 'bg-gray-50 font-medium': currentLanguage === 'kh' }">
                             <span class="fi fi-kh"></span>
-                            ខ្មែរ
-                        </button>
+                            {{ __('khmer') }}
+                        </a>
                     </div>
                 </div>
 

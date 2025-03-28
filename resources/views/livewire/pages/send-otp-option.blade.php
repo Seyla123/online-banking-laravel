@@ -1,11 +1,10 @@
-<div class="max-w-[420px]  mx-auto  p-4" x-data="{
+<div class="max-w-[420px] mx-auto p-4" x-data="{
     selectedOtpOption: 'phone',
     submitSendCode() {
         $wire.submitSendOtpOption(this.selectedOtpOption);
     }
 }">
-    <div
-        class="flex justify-center text-sm text-center min-w-[420px] py-12 px-4 border shadow-sm rounded-2xl items-center flex-col gap-12">
+    <div class="flex justify-center text-sm text-center min-w-[420px] py-12 px-4 border shadow-sm rounded-2xl items-center flex-col gap-12">
 
         <div class="flex flex-col gap-4 justify-center items-center w-full">
             {{-- logo --}}
@@ -17,7 +16,7 @@
             <h2 class="text-2xl">{{ __('enter_verify_code') }}</h2>
 
             {{-- description --}}
-            <p class=" text-gray-500">{{ __('otp_authentication_description') }}</p>
+            <p class="text-gray-500">{{ __('otp_authentication_description') }}</p>
         </div>
 
         {{-- info transaction --}}
@@ -38,13 +37,12 @@
         {{-- send otp options select --}}
         <div class="w-full">
 
-            {{-- vai phone --}}
+            {{-- via phone --}}
             <x-send-otp-optios-card :title="$phone" name="phone" :description="__('send_otp_via_phone')">
                 <x-slot:icon>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-message-square-text-icon lucide-message-square-text">
+                        stroke-linejoin="round" class="lucide lucide-message-square-text-icon lucide-message-square-text">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                         <path d="M13 8H7" />
                         <path d="M17 12H7" />
@@ -52,7 +50,7 @@
                 </x-slot:icon>
             </x-send-otp-optios-card>
 
-            {{-- vai email --}}
+            {{-- via email --}}
             <x-send-otp-optios-card :title="$email" name="email" :description="__('send_otp_via_email')">
                 <x-slot:icon>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -67,7 +65,7 @@
 
         {{-- button submit send --}}
         <button type="button" @click="submitSendCode()"
-            class=" w-full rounded-full uppercase font-semibold hover:bg-gray-900 duration-200 items-center  py-4 bg-[#394553] text-white">
+            class="w-full rounded-full uppercase font-semibold hover:bg-gray-900 duration-200 items-center py-4 bg-[#394553] text-white">
             {{ __('send_button') }}
         </button>
 

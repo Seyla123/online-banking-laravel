@@ -2,8 +2,8 @@
     class="flex gap-2 items-center  focus:border-indigo-500 focus:ring-indigo-500 rounded-md border-[1px] px-4 py-2 "
     x-bind:class="errors.bankAccountNumber && 'border-red-500' ">
     <img class="w-6" src="{{ asset('asset/wallet.svg') }}" alt="balance">
-    <input @input="validateAccount()" type="number" x-model="bankAccountNumber"  placeholder="លេខគណនីធនាគារ"
-        class="w-full focus:outline-none 
+    <input @input="validateAccount()" type="number" x-model="bankAccountNumber" placeholder="{{ __('bank_account_number_placeholder') }}"
+        class="w-full focus:outline-none  lowercase
     focus:ring-0
     border-none shadow-none" />
     <button x-show="bankAccountNumber" class="text-red-500" @click.prevent="bankAccountNumber = ''">

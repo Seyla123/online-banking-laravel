@@ -67,6 +67,9 @@ class Checkout extends NoLayout
     }
     public function render()
     {
-        return view('livewire.pages.checkout');
+        $phone = $this->transaction->sourceWallet->user->formatted_phone_hide;
+        return view('livewire.pages.checkout',[
+            'phone' => $phone
+        ]);
     }
 }

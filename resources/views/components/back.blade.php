@@ -9,5 +9,5 @@
         <path d="M6 8L2 12L6 16" />
         <path d="M2 12H22" />
     </svg>
-    ត្រឡប់ក្រោយ
+    {{ __('back_button') }}
 </button>
