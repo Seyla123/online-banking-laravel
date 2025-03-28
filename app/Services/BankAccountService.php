@@ -26,12 +26,12 @@ class BankAccountService
                 'account_name' => Auth::user()->name,
             ]);
 
-            session()->flash('success', 'បញ្ជូលគណនីរបស់អ្នកបានជោគជ័យ');
+            session()->flash('success', __('bank_account_created_successfully'));
             return true;
         } catch (\Throwable $th) {
 
             if (config('app.env') == 'production') {
-                session()->flash('fail', 'បរាជ័យក្នុងការបញ្ជូលគណនី');
+                session()->flash('fail', __('operation_failed'));
             } else {
                 session()->flash('fail', $th->getMessage());
             }
@@ -49,17 +49,17 @@ class BankAccountService
             // find the bank account
             $bankAccount = $this->repository->find($id);
             if (!$bankAccount) {
-                throw new \Exception('រកមិនឃើញគណនីនេះក្នុងប្រព័ន្ធទេ');
+                throw new \Exception(__('bank_account_not_found'));
             }
 
             // delete the bank account
             $this->repository->delete($bankAccount);
             
-            session()->flash('success', 'លុបគណនីរបស់អ្នកបានជោគជ័យ');
+            session()->flash('success', __('bank_account_deleted_successfully'));
 
         } catch (\Throwable $th) {
             if (config('app.env') == 'production') {
-                session()->flash('fail', 'បរាជ័យក្នុងការលុបគណនី');
+                session()->flash('fail', __('operation_failed'));
             } else {
                 session()->flash('fail', $th->getMessage());
             }

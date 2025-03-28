@@ -7,7 +7,7 @@
     },
     validateAccount() {
         if (this.bankAccountNumber == '') {
-            this.errors.bankAccountNumber = 'សូមបញ្ជូលលេខគណនីជាមុនសិន !';
+            this.errors.bankAccountNumber = '{{ __('please_enter_account_number') }}';
             return false;
         }
 
@@ -21,16 +21,15 @@
             $wire.addBankAccount();
         }
     },
-
 }">
     {{-- header title --}}
     <x-slot name="header">
-        បញ្ជូលគណនី
+        {{ __('add_account') }}
     </x-slot>
     {{-- Banks --}}
     <section class="space-y-2">
         <h2 class="font-semibold text-gray-800 leading-tight">
-            សូមជ្រើសរើសធនាគារ ៖​
+            {{ __('select_bank') }} ​
         </h2>
         <div class="grid grid-cols-2 gap-2">
             @foreach ($banks as $bank)
@@ -41,9 +40,9 @@
     {{-- bank account input  --}}
     <section class="space-y-2">
         <h2 class="font-semibold text-gray-800 leading-tight">
-            សូមបញ្ជូលលេខគណនី ៖
+            {{ __('enter_account_number') }} :
         </h2>
-        <div class="space-y-2"">
+        <div class="space-y-2">
             <x-input-account-number x-model="bankAccountNumber" />
             <!-- Alpine Error Message -->
             <p x-show="errors.bankAccountNumber" x-text="errors.bankAccountNumber" class="text-red-500 text-sm mt-2">
@@ -56,8 +55,8 @@
     {{-- button submit --}}
     <div class="fixed bottom-0 left-0 right-0 p-4 max-w-2xl mx-auto">
         <x-primary-button type="button" @click="submitForm" class="z-10 w-full flex justify-center py-4">
-            <span wire:loading.remove>រក្សារទុក</span>
-            <span wire:loading>កំពុងដំណើរការ...</span>
+            <span wire:loading.remove>{{ __('save') }}</span>
+            <span wire:loading>{{ __('processing') }}</span>
         </x-primary-button>
     </div>
     {{-- Success & Error Messages from Livewire Flash Session --}}

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Checkout;
 use App\Models\Transaction;
 use App\Repositories\CheckoutRepository;
+use Illuminate\Support\Facades\Auth;
 
 class CheckoutService
 {
@@ -13,6 +14,7 @@ class CheckoutService
     {
         $this->repository = $repository;
     }
+
     /**
      * create checkout for confirm transaction
      * @param \App\Models\Transaction $transaction
@@ -28,6 +30,7 @@ class CheckoutService
             ]
         );
     }
+
     /**
      * verify otp checkout 
      * @param \App\Models\Checkout $checkout
@@ -37,11 +40,17 @@ class CheckoutService
      */
     public function verifyOtpCheckout(Checkout $checkout, string $otp): Checkout
     {
+        // Check for pending status and OTP validity
+        if ($checkout->status !== 'pending' || $checkout->expired_at < now() || !$checkout->otp_code) {
+            throw new \Exception(__('checkout_already_used_or_expired'));
+        }
+
         if ($checkout->otp_code != $otp) {
-            throw new \Exception('លេខកូដ OTP មិនត្រឹមត្រូវ');
+            throw new \Exception(__('otp_incorrect'));
         }
         return $checkout;
     }
+
     /**
      * check if checkout exists or expired
      * @param \App\Models\Transaction $transaction
@@ -50,18 +59,21 @@ class CheckoutService
      */
     public function checkIfCheckoutExistsOrExpired(Transaction $transaction): Checkout
     {
-        if (!$transaction->checkout) {
-            throw new \Exception('រកមិនឃើញ Checkout មួយនេះទេ');
+        $checkout = $transaction->checkout;
+
+        if (!$checkout) {
+            throw new \Exception(__('checkout_not_found'));
         }
-        if ($transaction->checkout->status !== 'pending') {
-            throw new \Exception('Checkout ត្រូវបានប្រើរួចហើយ');
+        if ($checkout->status !== 'pending') {
+            throw new \Exception(__('checkout_already_used'));
         }
-        if ($transaction->checkout->expired_at < now()) {
-            throw new \Exception('Checkout ត្រូវបានផុតកំណត់');
+        if ($checkout->expired_at < now()) {
+            throw new \Exception(__('checkout_expired'));
         }
 
-        return $transaction->checkout;
+        return $checkout;
     }
+
     /**
      * confirmCheckout , atfer confirm transaction update checkout status and set otp_code to null
      * @param \App\Models\Checkout $checkout

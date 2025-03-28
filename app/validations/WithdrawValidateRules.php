@@ -16,7 +16,7 @@ class WithdrawValidateRules
     {
         return [
             'amount.required' => 'សូមបញ្ជូលចំនួនទឹកប្រាក់ជាមុនសិន !',
-            'amount.lte' => 'ទឹកប្រាក់មិនគ្រប់គ្រាន់',
+            'amount.lte' => __('insufficient_funds'),
             'selectedBankAccount.required' => 'សូមជ្រើសរើសគណនីធនាគារ',
         ];
     }

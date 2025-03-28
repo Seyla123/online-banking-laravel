@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Repositories;
 
@@ -19,5 +19,12 @@ class TransactionRepository implements TransactionRepositoryInterface
     public function update(Transaction $transaction, array $data): bool
     {
         return $transaction->update($data);
+    }
+    public function findByReferenceCode(string $referenceCode): Transaction
+    {
+        // check if transaction exists
+        $transaction = Auth::user()->transactions->where('reference_code', $referenceCode)->first();
+
+        return $transaction;
     }
 }

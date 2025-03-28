@@ -8,7 +8,6 @@ use App\Models\Checkout;
 use App\Models\PrimaryBankAccount;
 use App\Models\Transaction;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Wallet;
 use Illuminate\Database\Seeder;
 
@@ -19,65 +18,43 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(3)->create();
+        // Create users
+        $users = User::factory(3)->create();
 
-        User::factory()->create([
+        $testUser = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
 
+        // Create banks
+        $banks = ['aba', 'wing', 'acleda', 'kess'];
+        foreach ($banks as $bank) {
+            Bank::factory()->create(['bank_name' => $bank]);
+        }
 
+        // Create Bank Accounts and Wallets for each user
+        foreach ($users as $user) {
+            // Create bank accounts
+            $bankAccounts = BankAccount::factory()->count(4)->create([
+                'user_id' => $user->id,
+            ]);
 
-        // create banks 
-        $banks = [
-            'aba',
-            'wing',
-            'acleda',
-            'kess'
-        ];
-        foreach ($banks as $bank)
-        {
-            Bank::factory()->create([
-                'bank_name'=>$bank
+            // Assign a primary bank account
+            PrimaryBankAccount::factory()->create([
+                'user_id' => $user->id,
+                'bank_account_id' => $bankAccounts->random()->id, // Randomly select a bank account
+            ]);
+
+            // Create wallets
+            Wallet::factory()->count(2)->create([
+                'user_id' => $user->id,
             ]);
         }
-        // Create Bank account
-        User::factory()->count(2)
-            ->has(
-                BankAccount::factory()
-                ->count(4)
-            )
-            ->has(
-                PrimaryBankAccount::factory(1)->state(function (array $attributes, User $user) {
-                    return [
-                        'user_id' => $user->id,
-                        'bank_account_id' => BankAccount::where('user_id', $user->id)->get()->random()->id,
-                    ];
-                })
-            )
-            ->has(
-                Wallet::factory()->count(2)
-            )
+
+        // Create Transactions with Checkouts
+        Transaction::factory()
+            ->count(10)
+            ->has(Checkout::factory()->count(1))
             ->create();
-
-            // create 10
-            Transaction::factory()->count(10)
-                        ->has(
-                            Checkout::factory()->count(1)
-                        )
-                        ->create();
-
-            // User::factory()->count(2)
-            // ->has(
-            //     Car::factory()
-            //         ->count(50)
-            //         ->has(CarImage::factory()
-            //             ->count(5)
-            //             ->sequence(fn(Sequence $sequence) =>
-            //                 ['position' => $sequence->index % 5 + 1]), 'images')
-            //         ->hasFeatures(),
-            //     'favouriteCars'
-            // )
-            // ->create();
     }
 }

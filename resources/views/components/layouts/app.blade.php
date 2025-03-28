@@ -24,9 +24,9 @@
         <!-- Page Heading -->
         @if (isset($header))
             <header class="bg-white flex justify-center items-center max-w-3xl mx-auto p-4">
-                <div class=" flex px-4 sm:px-6 lg:px-8 justify-between w-full">
+                <div class=" flex px-4 sm:px-6 lg:px-8 justify-between w-full" x-data="{ back() { window.history.back(); } }">
                     {{-- back to previous --}}
-                    <x-back />
+                    <x-back click="back()" />
                     {{-- header title --}}
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                         {{ $header }}
@@ -46,7 +46,7 @@
         @isset($buttom)
             {{ $buttom }}
         @endisset
-       
+
     </div>
 </body>
 

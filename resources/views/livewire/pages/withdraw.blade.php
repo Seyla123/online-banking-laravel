@@ -1,6 +1,6 @@
 <div class="max-w-2xl mx-auto space-y-6" x-data="{
     amount: $wire.amount == 0 ? '' : $wire.amount,
-    selectedBankAccount: @js($primaryBankAccount), 
+    selectedBankAccount: @js($primaryBankAccount),
     errors: {
         amount: '',
         bankAccount: ''
@@ -19,7 +19,7 @@
     },
     validateAmount() {
         if (!this.amount || this.amount == 0) {
-            this.errors.amount = 'សូមបញ្ជូលចំនួនទឹកប្រាក់ជាមុនសិន !';
+            this.errors.amount = '{{ __('amount_required') }}';
             return false;
         }
 
@@ -28,7 +28,7 @@
     },
     validateBankAccount() {
         if (!this.selectedBankAccount) {
-            this.errors.bankAccount = 'សូមជ្រើសរើសគណនីធនាគារ';
+            this.errors.bankAccount = '{{ __('bank_account_required') }}';
             return false;
         }
         this.errors.bankAccount = '';
@@ -50,23 +50,23 @@
 }">
     {{-- header title --}}
     <x-slot name="header">
-        ដកប្រាក់
+        {{ __('withdraw') }}
     </x-slot>
 
     {{-- wallet section --}}
     <section class="space-y-2">
         <h2 class="font-semibold text-gray-800 leading-tight">
-            កាបូបរបស់អ្នក ៖​
+            {{ __('your_wallet') }} ៖​
         </h2>
         <x-wallet-card :walletNumber="$wallet->wallet_number" :balance="$wallet->balance" />
     </section>
     {{-- verify phone --}}
     <x-alert-verify-phone :phone="auth()->user()->phone" />
 
-    {{-- input withdraw amount section--}}
+    {{-- input withdraw amount section --}}
     <section class="space-y-2">
         <h2 class="font-semibold text-gray-800 leading-tight">
-            សូមកំណត់ចំនួនទឹកប្រាក់ ៖​
+            {{ __('set_amount') }} ៖​
         </h2>
         <div class="space-y-2">
             <x-input-amount x-model.number="amount" wire:model.number="amount" x-bind:input="validateAmount()" />
@@ -76,6 +76,7 @@
             @error('amount')
                 <x-input-error :messages="$errors->get('amount')" class="mt-2" />
             @enderror
+
             {{-- key amount input --}}
             <div class="grid grid-cols-4 gap-1" x-data="{ keysInput: [5, 10, 20, 50, 100, 200, 300, 500] }">
                 <template x-for="key in keysInput">
@@ -87,30 +88,41 @@
         </div>
     </section>
 
-    {{-- bank account section--}}
+    {{-- bank account section --}}
     <section class="space-y-2">
         <div class="flex justify-between">
             <h2 class="font-semibold text-gray-800 leading-tight">
-                ជ្រើសរើសគណនីធនាគារដកប្រាក់ ៖​
+                {{ __('select_bank_account') }} ៖​
             </h2>
-            {{-- click to add bank account--}}
+            {{-- click to add bank account --}}
             <a wire:navigate href="{{ route('add-bank-account') }}"
                 class="flex gap-1 items-center transition-transform duration-300 transform hover:scale-105">
                 <h2 class="font-semibold text-gray-800 leading-tight">
-                    បន្ថែមគណនី
+                    {{ __('add_account') }}
                 </h2>
                 <img class="min-w-5" src="{{ asset('asset/add.svg') }}" alt="edit">
             </a>
         </div>
         <div class="space-y-1 lg:space-y-2">
-            @foreach ($bankAccounts as $bankAccount)
+            {{-- bank account card --}}
+            @forelse ($bankAccounts as $bankAccount)
                 <x-bank-account-card 
-                    :accountName="$bankAccount->account_name" :accountNumber="$bankAccount->account_number" 
-                    :bank="$bankAccount->bank->bank_name" :bankAccountId="$bankAccount->id"
+                    wire:key="{{ $bankAccount->id }}" 
+                    :accountName="$bankAccount->account_name" 
+                    :accountNumber="$bankAccount->account_number"
+                    :bank="$bankAccount->bank->bank_name" 
+                    :bankAccountId="$bankAccount->id" 
                     @click="selectBankAccount({{ $bankAccount->id }})" 
-                    wire:key="{{ $bankAccount->id }}"
                 />
-            @endforeach
+            {{-- no bank account --}}
+            @empty
+                <div class="min-h-[150px] flex items-center justify-center bg-gray-100 rounded-lg shadow-md p-4">
+                    <div class="flex flex-col items-center gap-2">
+                        <p class="text-center text-gray-600 text-lg font-semibold">{{ __('no_accounts') }}</p>
+
+                    </div>
+                </div>
+            @endforelse
             <!-- Alpine Error Message -->
             <p x-show="errors.bankAccount" x-text="errors.bankAccount" class="text-red-500 text-sm mt-2">
             </p>
@@ -118,10 +130,10 @@
     </section>
 
     {{-- submit button --}}
-    <div class="flex w-full justify-center pb-4 sticky bottom-0">
-        <x-primary-button type="button" @click="submitForm" class="w-full flex justify-center py-4">
-            <span wire:loading.remove>ដកប្រាក់</span>
-            <span wire:loading>កំពុងដំណើរការ...</span>
+    <div class="flex w-full justify-center pb-4 sticky bottom-0 ">
+        <x-primary-button type="button" @click="submitForm" class="w-full flex justify-center py-4 capitalize">
+            <span wire:loading.remove>{{ __('withdraw') }}</span>
+            <span wire:loading>{{ __('processing') }}</span>
         </x-primary-button>
     </div>
 
@@ -136,4 +148,4 @@
             <x-modal-error :message="session('fail')" />
         </div>
     @endif
-</form>
+    </form>

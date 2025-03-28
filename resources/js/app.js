@@ -1,7 +1,7 @@
-import './bootstrap';
-import { createIcons,icons } from 'lucide';
+import "./bootstrap";
 
-document.addEventListener('DOMContentLoaded', () => {
-    createIcons({icons});
+import { createIcons, icons } from "lucide";
+
+document.addEventListener("DOMContentLoaded", () => {
+    createIcons({ icons });
 });
-
