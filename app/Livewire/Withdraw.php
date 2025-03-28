@@ -21,7 +21,6 @@ class Withdraw extends Component
     private BankAccountService $bankAccountService;
     private TransactionService $transactionService;
     private WalletRepository $walletRepository;
-    private CheckoutService $checkoutService;
     public function boot(
         BankAccountService $bankAccountService,
         TransactionService $transactionService,
@@ -31,7 +30,6 @@ class Withdraw extends Component
         $this->bankAccountService = $bankAccountService;
         $this->transactionService = $transactionService;
         $this->walletRepository = $walletRepository;
-        $this->checkoutService = $checkoutService;
     }
     public function save()
     {
