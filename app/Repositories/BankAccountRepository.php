@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\interfaces\BankAccountRepositoryInterface;
+use App\Interfaces\BankAccountRepositoryInterface;
 use App\Models\BankAccount;
 use Illuminate\Support\Facades\Auth;
 
