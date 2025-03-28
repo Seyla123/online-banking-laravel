@@ -72,5 +72,10 @@
     "delete_warning": "warning-delete.svg",
     "message": "តើ​អ្នក​ប្រាកដ​ជា​ចង់​លុប​គណនី​នេះឬទេ ?",
     "cancel": "ត្រឡប់ក្រោយ",
-    "delete": "លុប"
+    "delete": "លុប",
+    "quick_actions": "សកម្មភាពលឿន",
+    "deposit": "បញ្ចូលប្រាក់",
+    "recent_transactions": "ប្រតិបត្តិការប្រាក់ថ្មីៗ",
+    "view_all": "មើលទាំងអស់",
+    "no_transactions": "មិនមានប្រតិបត្តិការណាមួយ"
 }

@@ -72,5 +72,11 @@
     "delete_warning": "warning-delete.svg",
     "message": "Are you sure you want to delete this account?",
     "cancel": "Cancel",
-    "delete": "Delete"
+    "delete": "Delete",
+    "quick_actions": "Quick Actions",
+    "deposit": "Deposit",
+    "recent_transactions": "Recent Transactions",
+    "view_all": "View All",
+    "no_transactions": "No transactions found"
+
 }

@@ -55,5 +55,15 @@ class Wallet extends Model
         return $formattedWalletNumber;
     }
 
+    public function outgoingTransactions()
+    {
+        return $this->hasMany(Transaction::class, 'source_wallet_id');
+    }
+
+    public function incomingTransactions()
+    {
+        return $this->hasMany(Transaction::class, 'destination_wallet_id');
+    }
+
 
 }
