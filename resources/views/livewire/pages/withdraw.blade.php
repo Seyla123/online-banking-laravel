@@ -70,12 +70,13 @@
         </h2>
         <div class="space-y-2">
             <x-input-amount x-model.number="amount" wire:model.number="amount" x-bind:input="validateAmount()" />
-            <!-- Alpine Error Message -->
-            <p x-show="errors.amount" x-text="errors.amount" class="text-red-500 text-sm mt-2">
-            </p>
-            @error('amount')
-                <x-input-error :messages="$errors->get('amount')" class="mt-2" />
-            @enderror
+            <!-- Combined Error Message -->
+            <div x-show="errors.amount" class="mt-2">
+                <p x-show="errors.amount" x-text="errors.amount" class="text-red-500 text-sm"></p>
+                @error('amount')
+                    <x-input-error :messages="$errors->get('amount')" class="mt-1" />
+                @enderror
+            </div>
 
             {{-- key amount input --}}
             <div class="grid grid-cols-4 gap-1" x-data="{ keysInput: [5, 10, 20, 50, 100, 200, 300, 500] }">
