@@ -12,7 +12,7 @@ class Wallet extends Component
 {
     #[Title('កាបូប')]
     public WalletModel $wallet;
-    public $perPage = 5;
+    public $perPage = 1;
     public $hasMorePages = true;
 
     public function mount()
@@ -23,9 +23,9 @@ class Wallet extends Component
     public function loadMore()
     {
         // Add fake loading delay
-        sleep(2);
+        sleep(1);
         
-        $this->perPage += 5;
+        $this->perPage += 1;
     }
 
     public function render()

@@ -54,12 +54,12 @@
     </x-slot>
 
     {{-- wallet section --}}
-    <section class="space-y-2">
-        <h2 class="font-semibold text-gray-800 leading-tight">
-            {{ __('your_wallet') }} ៖​
-        </h2>
-        <x-wallet-card :walletNumber="$wallet->wallet_number" :balance="$wallet->balance" />
-    </section>
+    <x-wallet-card 
+        :walletNumber="$wallet->wallet_number" 
+        :balance="$wallet->balance" 
+        :username="auth()->user()->name" 
+    />
+
     {{-- verify phone --}}
     <x-alert-verify-phone :phone="auth()->user()->phone" />
 
@@ -106,15 +106,9 @@
         <div class="space-y-1 lg:space-y-2">
             {{-- bank account card --}}
             @forelse ($bankAccounts as $bankAccount)
-                <x-bank-account-card 
-                    wire:key="{{ $bankAccount->id }}" 
-                    :accountName="$bankAccount->account_name" 
-                    :accountNumber="$bankAccount->account_number"
-                    :bank="$bankAccount->bank->bank_name" 
-                    :bankAccountId="$bankAccount->id" 
-                    @click="selectBankAccount({{ $bankAccount->id }})" 
-                />
-            {{-- no bank account --}}
+                <x-bank-account-card wire:key="{{ $bankAccount->id }}" :accountName="$bankAccount->account_name" :accountNumber="$bankAccount->account_number"
+                    :bank="$bankAccount->bank->bank_name" :bankAccountId="$bankAccount->id" @click="selectBankAccount({{ $bankAccount->id }})" />
+                {{-- no bank account --}}
             @empty
                 <div class="min-h-[150px] flex items-center justify-center bg-gray-100 rounded-lg shadow-md p-4">
                     <div class="flex flex-col items-center gap-2">

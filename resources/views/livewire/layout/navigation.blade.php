@@ -12,15 +12,6 @@ new class extends Component {
         $logout();
         $this->redirect('/', navigate: true);
     }
-
-    /**
-     * Change the application language.
-     */
-    public function changeLanguage($locale): void
-    {
-        app()->setLocale($locale);
-        session()->put('locale', $locale);
-    }
 }; ?>
 <nav x-data="{ open: false, languageOpen: false }" class="bg-white border-b border-gray-100 sticky top-0 z-50">
     <!-- Primary Navigation Menu -->
@@ -35,7 +26,6 @@ new class extends Component {
                 </div>
 
                 <!-- Navigation Links -->
-
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('wallet')" :active="request()->routeIs('wallet')" wire:navigate>
                         {{ __('wallet') }}
@@ -44,10 +34,6 @@ new class extends Component {
                         {{ __('withdraw') }}
                     </x-nav-link>
                 </div>
-
-
-
-
             </div>
 
             <!-- Right Side Controls -->
@@ -110,9 +96,10 @@ new class extends Component {
                         <x-slot name="trigger">
                             <button
                                 class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
-                                <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name"
-                                    x-on:profile-updated.window="name = $event.detail.name"
-                                    class="text-sm font-medium text-gray-700"></div>
+                                <div class="font-medium text-base text-gray-800 truncate max-w-[100px]" 
+                    x-data="{{ json_encode(['name' => auth()->user()->name]) }}" 
+                    x-text="name"
+                    x-on:profile-updated.window="name = $event.detail.name"></div>
                                 <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
